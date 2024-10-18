@@ -26,8 +26,8 @@ npm install -g serve
 #### Installation
 
 ```bat
-git clone https://github.com/nicolasventer/WebpackReactTemplate.git
-cd WebpackReactTemplate
+git clone https://github.com/nicolasventer/Preact-Project-Template
+cd Preact-Project-Template
 all_init_on_cloned.bat
 ```
 

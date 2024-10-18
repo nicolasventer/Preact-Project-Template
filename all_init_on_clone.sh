@@ -10,4 +10,4 @@ cd ..
 bun install
 bun run build
 
-cd ../../scripts
+cd ..

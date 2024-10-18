@@ -1,4 +1,5 @@
-import { signal, Signal } from "@preact/signals";
+import { effect, signal, Signal } from "@preact/signals";
+import { objDiffStr } from "./commonUtils";
 
 /**
  * Type corresponding to the value of a signal.
@@ -72,4 +73,29 @@ export const valueToSignal = <T>(value: T): ValueToSignal<T> => {
 		return obj as ValueToSignal<T>;
 	}
 	return signal(value) as ValueToSignal<T>;
+};
+
+/**
+ * Creates a signal that shows a toast with the difference between the old and new value.
+ * @param initialValue the initial value of the signal
+ * @param onDiff the function to call when a difference is detected
+ * @returns the signal
+ */
+export const signalWithDiff = <T>(initialValue: T, onDiff: (diffStr: string) => void) => {
+	const oldSignal = signal<T>(initialValue);
+	const newSignal = signal<T>(initialValue);
+	effect(() => {
+		const oldSignalValue = oldSignal.peek();
+		const newSignalValue = newSignal.value;
+		const diffStr =
+			typeof oldSignalValue === "object"
+				? objDiffStr(oldSignalValue ?? {}, typeof newSignalValue === "object" ? newSignalValue ?? {} : {})
+				: oldSignalValue !== newSignalValue
+				? `${oldSignalValue} --> ${newSignalValue}`
+				: "";
+		if (!diffStr) return;
+		onDiff(diffStr);
+		oldSignal.value = newSignal.value;
+	});
+	return newSignal;
 };

@@ -9,8 +9,6 @@ export const COLOR_SCHEMES = ["light", "dark"] as const;
 /**
  * Color scheme object
  * @enum
- * @property light - Light color scheme
- * @property dark - Dark color scheme
  */
 export const COLOR_SCHEMES_OBJ = {
 	/** Light color scheme */
@@ -21,3 +19,33 @@ export const COLOR_SCHEMES_OBJ = {
 /** Color scheme type */
 export type ColorSchemeType = (typeof COLOR_SCHEMES)[number];
 checkEnumObj<ColorSchemeType>(COLOR_SCHEMES_OBJ);
+
+/** Language values */
+export const LANGUAGES = ["en", "fr"] as const;
+/**
+ * Language object
+ * @enum
+ */
+export const LANGUAGES_OBJ = {
+	/** English language */
+	en: "en",
+	/** French language */
+	fr: "fr",
+} as const;
+/** Language type */
+export type LanguageType = (typeof LANGUAGES)[number];
+checkEnumObj<LanguageType>(LANGUAGES_OBJ);
+
+/** Translation categories */
+export const TRANSLATION_CATEGORIES = [] as const;
+/**
+ * Translation category object
+ * @enum
+ */
+export const TRANSLATION_CATEGORIES_OBJ = {} as const;
+/** Translation category type */
+export type TranslationCategoryType = (typeof TRANSLATION_CATEGORIES)[number];
+checkEnumObj<TranslationCategoryType>(TRANSLATION_CATEGORIES_OBJ);
+
+/** Dynamic translation dictionary */
+export type DynDict = Record<TranslationCategoryType, Record<string, string>>;

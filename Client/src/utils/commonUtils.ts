@@ -1,10 +1,11 @@
 import toast from "react-hot-toast";
+import { tr } from "../context/GlobalState";
 
 /**
  * Creates a toast that says the given description is not implemented yet
  * @param description the description of the feature that is not implemented yet
  */
-export const TodoFn = (description: string) => () => toast(`${description} is not implemented yet`, { icon: "⏳" });
+export const TodoFn = (description: string) => () => toast(`${description} ${tr.v["is not implemented yet"]}`, { icon: "⏳" });
 
 /**
  * Calculates the width size object based on the given size.
@@ -59,4 +60,66 @@ export const debounceFn = (fn: Function, ms: number) => {
 		clearTimeout(timeout);
 		timeout = setTimeout(() => fn(...args), ms);
 	};
+};
+
+/**
+ * Waits for the given amount of milliseconds.
+ * @param ms the amount of milliseconds to wait
+ * @returns a promise that resolves after the given amount of milliseconds
+ */
+export const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
+ * Checks if the given object is empty.
+ * @param obj the object to check
+ * @returns true if the object is empty, false otherwise
+ */
+export const isObjectEmpty = (obj: Record<string, any>) => {
+	for (const prop in obj) if (Object.hasOwn(obj, prop)) return false;
+	return true;
+};
+
+/**
+ * Tries to parse the given JSON string.
+ * @param jsonString the JSON string to parse
+ * @param defaultValue the default value to return if the JSON string is invalid
+ * @returns the parsed JSON object or the default value if the JSON string is invalid
+ */
+export const tryParseJson = <T>(jsonString: string, defaultValue: T) => {
+	try {
+		return JSON.parse(jsonString) as T;
+	} catch {
+		return defaultValue;
+	}
+};
+
+/**
+ * Returns a string that represents the difference between two objects.
+ * The format of the string is: 'path: value1 --> value2'. For undefined values, '___' is used.
+ * @param obj1 first object
+ * @param obj2 second object
+ * @returns the difference between the two objects as a string
+ */
+export const objDiffStr = (obj1: Object, obj2: Object): string => {
+	const keys = new Set([...Object.keys(obj1 ?? {}), ...Object.keys(obj2 ?? {})]) as Set<keyof typeof obj1 | keyof typeof obj2>;
+	const result = [];
+	for (const k of keys) {
+		if (typeof obj1[k] === "object") {
+			if (typeof obj2[k] === "object") {
+				const diffStr = objDiffStr(obj1[k], obj2[k]);
+				if (diffStr) diffStr.split("\n").forEach((line) => result.push(`${k}.${line}`));
+			} else {
+				const diffStr = objDiffStr(obj1[k], {});
+				if (diffStr) diffStr.split("\n").forEach((line) => result.push(`${k}.${line}`));
+				else result.push(`${k}: ${obj1[k] ?? "___"} --> ${obj2[k]}`);
+			}
+		} else if (typeof obj2[k] === "object") {
+			const diffStr = objDiffStr({}, obj2[k]);
+			if (diffStr) diffStr.split("\n").forEach((line) => result.push(`${k}.${line}`));
+			else result.push(`${k}: ${obj1[k]} --> ${obj2[k] ?? "___"}`);
+		} else if (obj1[k] !== obj2[k]) {
+			result.push(`${k}: ${obj1[k] ?? "___"} --> ${obj2[k]}`);
+		}
+	}
+	return result.join("\n");
 };

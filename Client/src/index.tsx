@@ -1,4 +1,5 @@
 import { render } from "preact";
+import { StrictMode } from "preact/compat";
 import { App } from "./App";
 import "./style.css";
 
@@ -12,4 +13,9 @@ if (!document.startViewTransition)
 		return { ready, finished, updateCallbackDone, skipTransition };
 	};
 
-render(<App />, document.getElementById("root")!);
+render(
+	<StrictMode>
+		<App />
+	</StrictMode>,
+	document.getElementById("root")!
+);

@@ -7,4 +7,4 @@ cd ../Client
 call bun install
 call bun run build
 
-cd ../../scripts
+cd ..

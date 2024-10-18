@@ -5,7 +5,7 @@ import { useMount } from "./useMount";
  * Hook to run a promise and get the state of it
  * @param fn function to run
  * @param runArgs arguments to run the function with on mount, if provided, do not forget to catch the promise
- * @returns object with the state of the promise and a run function to run the promise
+ * @returns object with the state of the promise, a run function to run the promise and a setData function to set the data
  */
 export const usePromiseObj = <T, U extends any[], V = unknown>(fn: (...args: U) => Promise<T>, runArgs?: U) => {
 	const [state, setState] = useState({
@@ -16,6 +16,8 @@ export const usePromiseObj = <T, U extends any[], V = unknown>(fn: (...args: U) 
 		/** The data of the promise */
 		data: null as T | null,
 	});
+
+	const setData = useCallback((data: T) => setState({ loading: false, error: null, data }), []);
 
 	const run = useCallback(
 		async (...args: U) => {
@@ -38,5 +40,7 @@ export const usePromiseObj = <T, U extends any[], V = unknown>(fn: (...args: U) 
 		...state,
 		/** Function to run the promise */
 		run,
+		/** Function to set the data */
+		setData,
 	};
 };

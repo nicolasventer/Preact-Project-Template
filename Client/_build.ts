@@ -12,7 +12,7 @@ const result = await Bun.build({
 	minify: true,
 	naming: {
 		entry: "[dir]/[name].[ext]",
-		chunk: "[dir]/[name].chunk.[ext]",
+		chunk: "[dir]/[name].chunk-[hash].[ext]",
 		asset: "asset/[name].[ext]",
 	},
 });
