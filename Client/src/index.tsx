@@ -1,8 +1,3 @@
-import { B_PROD } from "./_bProd";
-
-// @ts-expect-error (preact/debug is not in the types)
-if (!B_PROD) await import("preact/debug");
-
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";

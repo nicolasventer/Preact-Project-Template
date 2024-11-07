@@ -5,6 +5,7 @@ import { type MouseEventHandler, type TouchEventHandler, useRef } from "react";
 import { GrClear } from "react-icons/gr";
 import type { LogType } from "../Common/CommonModel";
 import { globalState } from "../context/GlobalState";
+import { useReact } from "../hooks/useReact";
 import { Horizontal, Overlap, Vertical } from "../utils/ComponentToolbox";
 const isWrap = signal(false);
 
@@ -72,6 +73,13 @@ const stopResize = (ev: MouseEvent | TouchEvent) => {
 export const CustomConsole = ({ resizable = true }: { resizable?: boolean }) => {
 	const paperRef = useRef<HTMLDivElement>(null);
 
+	useReact(isHandleHovered);
+	useReact(globalState.consoleHeight);
+	useReact(globalState.logToSeeCount);
+	useReact(globalState.logList);
+	useReact(globalState.isConsoleDisplayed);
+	useReact(isConsoleResizing);
+
 	return (
 		<Overlap height={"100%"} width={"100%"} style={{ position: "absolute", top: 0, pointerEvents: "none" }}>
 			<Vertical justifyContent="flex-end" style={{ zIndex: 200, pointerEvents: "none", margin: "-1px 0" }}>
@@ -92,6 +100,7 @@ export const CustomConsole = ({ resizable = true }: { resizable?: boolean }) => 
 									justifyContent: "center",
 									pointerEvents: "auto",
 									borderBottom: 0,
+									userSelect: "none",
 								}}
 								withBorder
 							>

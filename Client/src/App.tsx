@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { clientEnv } from "./clientEnv";
 import { globalState } from "./context/GlobalState";
+import { useReact } from "./hooks/useReact";
 import { HomePage } from "./pages/exports_";
 import type { HomePage as _HomePage } from "./pages/Home";
 import { WriteToolboxClasses } from "./utils/ComponentToolbox";
@@ -26,6 +27,8 @@ export const App = () => {
 	useEffect(() => void (globalState.isAboveMd.value = !!isAboveMd), [isAboveMd]);
 	useEffect(() => void (globalState.isBelowXxs.value = !!isBelowXxs), [isBelowXxs]);
 	useEffect(() => void (globalState.viewportSize.value = { height, width }), [height, width]);
+
+	useReact(globalState.colorScheme);
 
 	return (
 		<>

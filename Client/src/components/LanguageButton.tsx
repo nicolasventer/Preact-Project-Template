@@ -3,6 +3,7 @@ import { Languages } from "lucide-react";
 import { flushSync } from "preact/compat";
 import { LANGUAGES, type LanguageType } from "../Common/CommonModel";
 import { _isLanguageLoading, globalState } from "../context/GlobalState";
+import { useReact } from "../hooks/useReact";
 import { Vertical } from "../utils/ComponentToolbox";
 
 const LanguageDisplay: Record<LanguageType, string> = {
@@ -31,6 +32,8 @@ export const LanguageButton = ({
 			setTimeout(() => void ((globalState.language.value = language), onClick?.(language)), 100);
 		}
 	};
+	useReact(_isLanguageLoading);
+	useReact(globalState.language);
 
 	return (
 		<Popover position="bottom-end" withArrow>
