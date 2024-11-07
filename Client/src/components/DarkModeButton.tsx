@@ -4,6 +4,7 @@ import { Moon, Sun } from "lucide-react";
 import { flushSync } from "preact/compat";
 import type { ColorSchemeType } from "../Common/CommonModel";
 import { globalState } from "../context/GlobalState";
+import { useReact } from "../hooks/useReact";
 import { widthSizeObj } from "../utils/clientUtils";
 
 const isColorSchemeLoading = signal(false);
@@ -30,6 +31,9 @@ export const DarkModeButton = ({
 			);
 		}
 	};
+
+	useReact(isColorSchemeLoading);
+	useReact(globalState.colorScheme);
 
 	return (
 		<ActionIcon loading={isColorSchemeLoading.value}>
