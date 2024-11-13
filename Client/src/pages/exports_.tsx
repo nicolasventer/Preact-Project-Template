@@ -14,7 +14,8 @@ const Suspender = <T extends (...args: any) => any>(Comp: T) => {
 
 const defaultLoader =
 	<T extends Record<string, any>>(defaultExport: keyof T) =>
-	(mod: T) => ({ default: mod[defaultExport] });
+	(mod: T) =>
+		mod[defaultExport];
 
 // Pages
 
