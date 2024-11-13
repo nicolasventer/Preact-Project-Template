@@ -3,8 +3,7 @@ import { CustomConsole, setConsoleType } from "../components/CustomConsole";
 import { DarkModeButton } from "../components/DarkModeButton";
 import { LanguageButton } from "../components/LanguageButton";
 import { WakeLockButton } from "../components/WakeLockButton";
-import { gs, tr } from "../context/GlobalState";
-import { useReact } from "../hooks/useReact";
+import { tr } from "../context/GlobalState";
 
 const useTransition = signal(true);
 const toggleUseTransition = () => (useTransition.value = !useTransition.value);
@@ -17,18 +16,13 @@ effect(() => console.info("useTransition:", useTransition.value));
  * Home page
  * @returns the home page
  */
-export const HomePage = () => {
-	useReact(gs.tr);
-	useReact(useTransition);
-
-	return (
-		<>
-			{tr.v.Home}
-			<button onClick={toggleUseTransition}>{`${useTransition.value ? "Disable" : "Enable"} transition`}</button>
-			<DarkModeButton useTransition={useTransition.value} />
-			<WakeLockButton />
-			<LanguageButton useTransition={useTransition.value} />
-			<CustomConsole resizable />
-		</>
-	);
-};
+export const HomePage = () => (
+	<>
+		{tr.v.Home}
+		<button onClick={toggleUseTransition}>{`${useTransition.value ? "Disable" : "Enable"} transition`}</button>
+		<DarkModeButton useTransition={useTransition.value} />
+		<WakeLockButton />
+		<LanguageButton useTransition={useTransition.value} />
+		<CustomConsole resizable />
+	</>
+);

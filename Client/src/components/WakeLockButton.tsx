@@ -1,7 +1,6 @@
 import { effect, signal } from "@preact/signals";
 import { gs } from "../context/GlobalState";
 import { setWakeLock } from "../context/userActions";
-import { useReact } from "../hooks/useReact";
 
 const isWakeLockAvailable = "wakeLock" in navigator || "keepAwake" in screen;
 
@@ -66,17 +65,12 @@ export const automaticWakeLock = () => {
  * The wake lock button
  * @returns the button to toggle the wake lock
  */
-export const WakeLockButton = () => {
-	useReact(isWakeLockLoading);
-	useReact(gs.isWakeLock);
-
-	return (
-		<>
-			{isWakeLockAvailable && (
-				<button onClick={toggleWakeLock} disabled={isWakeLockLoading.value}>
-					{gs.isWakeLock.value ? "Enable" : "Disable"} Automatic Screen Lock
-				</button>
-			)}
-		</>
-	);
-};
+export const WakeLockButton = () => (
+	<>
+		{isWakeLockAvailable && (
+			<button onClick={toggleWakeLock} disabled={isWakeLockLoading.value}>
+				{gs.isWakeLock.value ? "Enable" : "Disable"} Automatic Screen Lock
+			</button>
+		)}
+	</>
+);

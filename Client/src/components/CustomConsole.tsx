@@ -3,7 +3,6 @@ import { type MouseEventHandler, type TouchEventHandler } from "react";
 import type { Log, LogType } from "../Common/CommonModel";
 import { gs } from "../context/GlobalState";
 import { addConsoleLog, clearConsole, resizeConsole, toggleConsole, updateLogToSeeCount } from "../context/userActions";
-import { useReact } from "../hooks/useReact";
 import { Horizontal, Overlap, Vertical } from "../utils/ComponentToolbox";
 
 const isWrap = signal(false);
@@ -67,104 +66,95 @@ const logTooltip = (log: Log) => {
  * @param {boolean} [props.resizable=true] If the console is resizable, default is true. If not resizable, the console will take the full height.
  * @returns The console that displays the execution log and errors.
  */
-export const CustomConsole = ({ resizable = true }: { resizable?: boolean }) => {
-	useReact(isHandleHovered);
-	useReact(gs.consoleHeight);
-	useReact(gs.logToSeeCount);
-	useReact(gs.logList);
-	useReact(gs.isConsoleDisplayed);
-	useReact(isConsoleResizing);
-
-	return (
-		<Overlap height={"100%"} width={"100%"} style={{ position: "absolute", top: 0, pointerEvents: "none" }}>
-			<Vertical justifyContent="flex-end" style={{ zIndex: 200, pointerEvents: "none", margin: "-2px 0" }}>
-				{gs.isConsoleDisplayed.value && (
-					<>
-						{resizable && (
-							<div
-								onMouseDown={startResize}
-								onMouseEnter={() => (isHandleHovered.value = true)}
-								onMouseLeave={() => (isHandleHovered.value = false)}
-								onTouchStart={startResize}
-								style={{
-									cursor: "ns-resize",
-									backgroundColor: isHandleHovered.value || isConsoleResizing.value ? "grey" : undefined,
-									borderRadius: 0,
-									display: "flex",
-									justifyContent: "center",
-									pointerEvents: "auto",
-									borderBottom: 0,
-									userSelect: "none",
-									border: "1px solid black",
-								}}
-							>
-								---
-							</div>
-						)}
+export const CustomConsole = ({ resizable = true }: { resizable?: boolean }) => (
+	<Overlap height={"100%"} width={"100%"} style={{ position: "absolute", top: 0, pointerEvents: "none" }}>
+		<Vertical justifyContent="flex-end" style={{ zIndex: 200, pointerEvents: "none", margin: "-2px 0" }}>
+			{gs.isConsoleDisplayed.value && (
+				<>
+					{resizable && (
 						<div
+							onMouseDown={startResize}
+							onMouseEnter={() => (isHandleHovered.value = true)}
+							onMouseLeave={() => (isHandleHovered.value = false)}
+							onTouchStart={startResize}
 							style={{
-								height: resizable ? gs.consoleHeight.value : "100%",
+								cursor: "ns-resize",
+								backgroundColor: isHandleHovered.value || isConsoleResizing.value ? "grey" : undefined,
+								borderRadius: 0,
+								display: "flex",
+								justifyContent: "center",
 								pointerEvents: "auto",
-								overflow: "auto",
+								borderBottom: 0,
+								userSelect: "none",
 								border: "1px solid black",
 							}}
 						>
-							{gs.logList.value.map((log, index) => {
-								const isLogToSee = gs.logList.value.length - index <= gs.logToSeeCount.value;
-								return (
-									<Horizontal
-										// eslint-disable-next-line react/no-array-index-key
-										key={index}
-										gap={8}
-										style={{
-											padding: "4px 8px",
-											background: isLogToSee ? "lightblue" : undefined,
-											cursor: isLogToSee ? "pointer" : undefined,
-										}}
-										alignItems="baseline"
-										onClick={() => isLogToSee && updateLogToSeeCount(index)}
-									>
-										<div
-											style={{
-												whiteSpace: "pre",
-												fontFamily: "consolas",
-												color:
-													log.type === "error" ? "red" : log.type === "warn" ? "yellow" : log.type === "info" ? "blue" : "gray",
-											}}
-										>
-											{`[${log.type}]`.padEnd(7)}
-										</div>
-										<div style={{ whiteSpace: "pre", fontFamily: "consolas" }}>[{log.time}]</div>
-										<div
-											style={{
-												whiteSpace: "pre",
-												fontFamily: "consolas",
-												textWrap: isWrap.value ? "wrap" : "nowrap",
-												overflowWrap: isWrap.value ? "anywhere" : undefined,
-											}}
-										>
-											{logTooltip(log)}
-											{log.message}
-										</div>
-									</Horizontal>
-								);
-							})}
+							---
 						</div>
-					</>
-				)}
-				<Horizontal gap={12} style={{ background: "white" }}>
-					<button onClick={toggleConsole} style={{ pointerEvents: "auto", flex: 1 }}>
-						Console
-					</button>
-					{gs.logToSeeCount.value !== 0 && <div style={{ color: "red" }}>{gs.logToSeeCount.value}</div>}
-					<button onClick={clearConsole} style={{ pointerEvents: "auto" }}>
-						Clear
-					</button>
-				</Horizontal>
-			</Vertical>
-		</Overlap>
-	);
-};
+					)}
+					<div
+						style={{
+							height: resizable ? gs.consoleHeight.value : "100%",
+							pointerEvents: "auto",
+							overflow: "auto",
+							border: "1px solid black",
+						}}
+					>
+						{gs.logList.value.map((log, index) => {
+							const isLogToSee = gs.logList.value.length - index <= gs.logToSeeCount.value;
+							return (
+								<Horizontal
+									// eslint-disable-next-line react/no-array-index-key
+									key={index}
+									gap={8}
+									style={{
+										padding: "4px 8px",
+										background: isLogToSee ? "lightblue" : undefined,
+										cursor: isLogToSee ? "pointer" : undefined,
+									}}
+									alignItems="baseline"
+									onClick={() => isLogToSee && updateLogToSeeCount(index)}
+								>
+									<div
+										style={{
+											whiteSpace: "pre",
+											fontFamily: "consolas",
+											color:
+												log.type === "error" ? "red" : log.type === "warn" ? "yellow" : log.type === "info" ? "blue" : "gray",
+										}}
+									>
+										{`[${log.type}]`.padEnd(7)}
+									</div>
+									<div style={{ whiteSpace: "pre", fontFamily: "consolas" }}>[{log.time}]</div>
+									<div
+										style={{
+											whiteSpace: "pre",
+											fontFamily: "consolas",
+											textWrap: isWrap.value ? "wrap" : "nowrap",
+											overflowWrap: isWrap.value ? "anywhere" : undefined,
+										}}
+									>
+										{logTooltip(log)}
+										{log.message}
+									</div>
+								</Horizontal>
+							);
+						})}
+					</div>
+				</>
+			)}
+			<Horizontal gap={12} style={{ background: "white" }}>
+				<button onClick={toggleConsole} style={{ pointerEvents: "auto", flex: 1 }}>
+					Console
+				</button>
+				{gs.logToSeeCount.value !== 0 && <div style={{ color: "red" }}>{gs.logToSeeCount.value}</div>}
+				<button onClick={clearConsole} style={{ pointerEvents: "auto" }}>
+					Clear
+				</button>
+			</Horizontal>
+		</Vertical>
+	</Overlap>
+);
 
 const oldConsoleLog = console.log;
 const oldConsoleInfo = console.info;

@@ -1,5 +1,3 @@
-import { globalState } from "../context/GlobalState";
-import { useReact } from "../hooks/useReact";
 import { RouterRender } from "../routerInstance.gen";
 import { FullViewport, WriteToolboxClasses } from "../utils/ComponentToolbox";
 
@@ -8,12 +6,9 @@ import { FullViewport, WriteToolboxClasses } from "../utils/ComponentToolbox";
  * @returns The rendered application.
  */
 // @routeExport
-export const MainLayout = () => {
-	useReact(globalState.colorScheme);
-	return (
-		<FullViewport>
-			<WriteToolboxClasses />
-			<RouterRender subPath="/" />
-		</FullViewport>
-	);
-};
+export const MainLayout = () => (
+	<FullViewport>
+		<WriteToolboxClasses />
+		<RouterRender subPath="/" />
+	</FullViewport>
+);

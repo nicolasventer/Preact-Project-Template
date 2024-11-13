@@ -1,4 +1,4 @@
-import react from "@vitejs/plugin-react";
+import preact from "@preact/preset-vite";
 import path from "path";
 import { env } from "process";
 import { defineConfig } from "vite";
@@ -22,7 +22,7 @@ const lazyComponentWatcher = watch({
 
 export default defineConfig({
 	base: "./",
-	plugins: [react(), ...(env.USE_HTTPS ? [mkcert()] : []), langBuildWatcher, routesGenWatcher, lazyComponentWatcher],
+	plugins: [preact(), ...(env.USE_HTTPS ? [mkcert()] : []), langBuildWatcher, routesGenWatcher, lazyComponentWatcher],
 	build: {
 		rollupOptions: {
 			output: {
