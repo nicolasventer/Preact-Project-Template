@@ -1,11 +1,10 @@
-import toast from "react-hot-toast";
 import { tr } from "../context/GlobalState";
 
 /**
  * Creates a toast that says the given description is not implemented yet
  * @param description the description of the feature that is not implemented yet
  */
-export const TodoFn = (description: string) => () => toast(`${description} ${tr.v["is not implemented yet"]}`, { icon: "⏳" });
+export const TodoFn = (description: string) => () => console.info(`${description} ${tr.v["is not implemented yet"]}`, "⏳");
 
 /**
  * Calculates the width size object based on the given size.

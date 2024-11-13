@@ -1,5 +1,3 @@
-import { ActionIcon } from "@mantine/core";
-import { Save } from "lucide-react";
 import { globalState } from "../context/GlobalState";
 import { saveAs } from "../utils/commonUtils";
 import { signalToValue } from "../utils/signalUtils";
@@ -7,8 +5,4 @@ import { signalToValue } from "../utils/signalUtils";
 const exportData = () =>
 	saveAs(new Blob([JSON.stringify(signalToValue(globalState))], { type: "application/json" }), "export.json");
 
-export const ExportDataButton = () => (
-	<ActionIcon variant="transparent" onClick={exportData}>
-		<Save />
-	</ActionIcon>
-);
+export const ExportDataButton = () => <button onClick={exportData}>Export Data</button>;

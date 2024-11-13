@@ -1,10 +1,7 @@
-import { ActionIcon, Button, Popover } from "@mantine/core";
-import { Languages } from "lucide-react";
 import { flushSync } from "preact/compat";
 import { LANGUAGES, type LanguageType } from "../Common/CommonModel";
 import { _isLanguageLoading, globalState } from "../context/GlobalState";
 import { useReact } from "../hooks/useReact";
-import { Vertical } from "../utils/ComponentToolbox";
 
 const LanguageDisplay: Record<LanguageType, string> = {
 	en: "English",
@@ -36,25 +33,16 @@ export const LanguageButton = ({
 	useReact(globalState.language);
 
 	return (
-		<Popover position="bottom-end" withArrow>
-			<Popover.Target>
-				<ActionIcon loading={useTransition && _isLanguageLoading.value}>
-					<Languages />
-				</ActionIcon>
-			</Popover.Target>
-			<Popover.Dropdown p={8}>
-				<Vertical gap={8}>
-					{LANGUAGES.map((language) => (
-						<Button
-							key={language}
-							onClick={setLanguageFn(language)}
-							variant={language === globalState.language.value ? "filled" : "light"}
-						>
-							{LanguageDisplay[language]}
-						</Button>
-					))}
-				</Vertical>
-			</Popover.Dropdown>
-		</Popover>
+		<select
+			value={globalState.language.value}
+			onChange={(e) => setLanguageFn(e.currentTarget.value as LanguageType)()}
+			disabled={_isLanguageLoading.value}
+		>
+			{LANGUAGES.map((language) => (
+				<option key={language} value={language}>
+					{LanguageDisplay[language]}
+				</option>
+			))}
+		</select>
 	);
 };
