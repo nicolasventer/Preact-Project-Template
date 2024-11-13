@@ -1,10 +1,7 @@
-import { ActionIcon } from "@mantine/core";
 import { signal } from "@preact/signals";
-import { Moon, Sun } from "lucide-react";
 import { gs } from "../context/GlobalState";
 import { setColorSchemeFn } from "../context/userActions";
 import { useReact } from "../hooks/useReact";
-import { widthSizeObj } from "../utils/clientUtils";
 
 const isColorSchemeLoading = signal(false);
 
@@ -19,23 +16,13 @@ export const DarkModeButton = ({ useTransition }: { useTransition: boolean }) =>
 	useReact(gs.colorScheme);
 
 	return (
-		<ActionIcon loading={isColorSchemeLoading.value}>
-			{gs.colorScheme.value === "dark" && (
-				<Sun
-					width={widthSizeObj(3.5, 6)}
-					id={"light-mode-button"}
-					onClick={setColorSchemeFn("light", useTransition, isColorSchemeLoading)}
-					style={{ marginBottom: 1 }}
-				/>
-			)}
-			{gs.colorScheme.value === "light" && (
-				<Moon
-					width={widthSizeObj(3.5, 6)}
-					id={"dark-mode-button"}
-					onClick={setColorSchemeFn("dark", useTransition, isColorSchemeLoading)}
-					style={{ marginBottom: 1 }}
-				/>
-			)}
-		</ActionIcon>
+		<button
+			id={`${gs.colorScheme.value === "dark" ? "light" : "dark"}-mode-button`}
+			onClick={setColorSchemeFn(gs.colorScheme.value === "dark" ? "light" : "dark", useTransition, isColorSchemeLoading)}
+			disabled={isColorSchemeLoading.value}
+			style={{ cursor: "pointer" }}
+		>
+			{gs.colorScheme.value === "dark" ? "Light" : "Dark"} Mode
+		</button>
 	);
 };

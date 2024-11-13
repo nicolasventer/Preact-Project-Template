@@ -1,11 +1,7 @@
-import { ActionIcon } from "@mantine/core";
 import { effect, signal } from "@preact/signals";
-import { Lock, LockOpen } from "lucide-react";
-import toast from "react-hot-toast";
 import { gs } from "../context/GlobalState";
 import { setWakeLock } from "../context/userActions";
 import { useReact } from "../hooks/useReact";
-import { widthSizeObj } from "../utils/clientUtils";
 
 const isWakeLockAvailable = "wakeLock" in navigator || "keepAwake" in screen;
 
@@ -33,25 +29,25 @@ export const toggleWakeLock = () => {
 					isWakeLockLoading.value = false;
 
 					wakeLockObj.addEventListener("release", () => {
-						showToasts && toast("Automatic screen lock enabled", { icon: "🔓" });
+						showToasts && console.info("Automatic screen lock enabled", "🔓");
 						setWakeLock(false);
 						wakeLockObj = null;
 					});
 
 					setWakeLock(true);
-					showToasts && toast("Automatic screen lock disabled", { icon: "🔒" });
+					showToasts && console.info("Automatic screen lock disabled", "🔒");
 				})
 				.catch((err) => {
 					showToasts && console.error(err);
 					isWakeLockLoading.value = false;
-					showToasts && toast("Error while trying to keep screen locked on", { icon: "❌" });
+					showToasts && console.info("Error while trying to keep screen locked on", "❌");
 				});
 		}
 	} else if ("keepAwake" in screen) {
 		screen.keepAwake = !screen.keepAwake;
 		setWakeLock(!!screen.keepAwake);
-		if (screen.keepAwake) showToasts && toast("Automatic screen lock disabled", { icon: "🔒" });
-		else showToasts && toast("Automatic screen lock enabled", { icon: "🔓" });
+		if (screen.keepAwake) showToasts && console.info("Automatic screen lock disabled", "🔒");
+		else showToasts && console.info("Automatic screen lock enabled", "🔓");
 	}
 };
 
@@ -77,13 +73,9 @@ export const WakeLockButton = () => {
 	return (
 		<>
 			{isWakeLockAvailable && (
-				<ActionIcon loading={isWakeLockLoading.value} pb={1}>
-					{gs.isWakeLock.value ? (
-						<Lock onClick={toggleWakeLock} width={widthSizeObj(3.5, 6)} />
-					) : (
-						<LockOpen onClick={toggleWakeLock} width={widthSizeObj(3.5, 6)} />
-					)}
-				</ActionIcon>
+				<button onClick={toggleWakeLock} disabled={isWakeLockLoading.value}>
+					{gs.isWakeLock.value ? "Enable" : "Disable"} Automatic Screen Lock
+				</button>
 			)}
 		</>
 	);

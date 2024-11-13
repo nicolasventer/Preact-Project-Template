@@ -26,17 +26,6 @@ export type GlobalState = {
 	trDynDict: Signal<DynDict>;
 	/** if the screen is wake locked */
 	isWakeLock: Signal<boolean>;
-	/** if the screen is above md */
-	isAboveMd: Signal<boolean>;
-	/** if the screen is below xxs */
-	isBelowXxs: Signal<boolean>;
-	/** the size of the viewport */
-	viewportSize: Signal<{
-		/** the height of the viewport */
-		height: number;
-		/** the width of the viewport */
-		width: number;
-	}>;
 };
 
 type LocalStorageState = SignalToValue<Pick<GlobalState, "colorScheme" | "language" | "isConsoleDisplayed" | "consoleHeight">>;
@@ -65,9 +54,6 @@ export const loadGlobalState = (): GlobalState => {
 		tr: signal({} as Tr), // temporary value
 		trDynDict: signal({ mission_type: {} }),
 		isWakeLock: signal(false),
-		isAboveMd: signal(false),
-		isBelowXxs: signal(false),
-		viewportSize: signal({ height: 0, width: 0 }),
 	};
 };
 
@@ -128,13 +114,6 @@ const localStorageState = computed(
 		consoleHeight: gs.consoleHeight.value,
 	})
 );
-
-/** "md" if the screen is above md, "sm" otherwise. */
-export const smMd = computed(() => (gs.isAboveMd.value ? "md" : "sm"));
-/** "sm" if the screen is above md, "xs" otherwise. */
-export const xsSm = computed(() => (gs.isAboveMd.value ? "sm" : "xs"));
-/** "compact-md" if the screen is above md, "compact-sm" otherwise. */
-export const compactXsSm = computed(() => `compact-${xsSm.value}`);
 
 effect(() => localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(localStorageState.value)));
 

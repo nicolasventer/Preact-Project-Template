@@ -1,4 +1,3 @@
-import { Button } from "@mantine/core";
 import { effect, signal } from "@preact/signals";
 import { CustomConsole, setConsoleType } from "../components/CustomConsole";
 import { DarkModeButton } from "../components/DarkModeButton";
@@ -25,7 +24,7 @@ export const HomePage = () => {
 	return (
 		<>
 			{tr.v.Home}
-			<Button onClick={toggleUseTransition}>{`${useTransition.value ? "Disable" : "Enable"} transition`}</Button>
+			<button onClick={toggleUseTransition}>{`${useTransition.value ? "Disable" : "Enable"} transition`}</button>
 			<DarkModeButton useTransition={useTransition.value} />
 			<WakeLockButton />
 			<LanguageButton useTransition={useTransition.value} />
