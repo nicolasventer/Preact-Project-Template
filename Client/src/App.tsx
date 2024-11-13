@@ -1,6 +1,4 @@
 import { clientEnv } from "./clientEnv";
-import { globalState } from "./context/GlobalState";
-import { useReact } from "./hooks/useReact";
 import { HomePage, NotFoundPage } from "./pages/exports_";
 import type { HomePage as _HomePage } from "./pages/Home";
 import type { NotFoundPage as _NotFoundPage } from "./pages/NotFound";
@@ -15,8 +13,6 @@ import { Switch } from "./utils/MultiIf";
  */
 export const App = () => {
 	const url = new URL(window.location.href);
-
-	useReact(globalState.colorScheme);
 
 	return (
 		<>

@@ -2,7 +2,6 @@ import { computed, signal } from "@preact/signals";
 import { type MouseEventHandler, type TouchEventHandler, useRef } from "react";
 import type { Log, LogType } from "../Common/CommonModel";
 import { globalState } from "../context/GlobalState";
-import { useReact } from "../hooks/useReact";
 import { Horizontal, Overlap, Vertical } from "../utils/ComponentToolbox";
 const isWrap = signal(false);
 
@@ -81,13 +80,6 @@ const logTooltip = (log: Log) => {
  */
 export const CustomConsole = ({ resizable = true }: { resizable?: boolean }) => {
 	const paperRef = useRef<HTMLDivElement>(null);
-
-	useReact(isHandleHovered);
-	useReact(globalState.consoleHeight);
-	useReact(globalState.logToSeeCount);
-	useReact(globalState.logList);
-	useReact(globalState.isConsoleDisplayed);
-	useReact(isConsoleResizing);
 
 	return (
 		<Overlap height={"100%"} width={"100%"} style={{ position: "absolute", top: 0, pointerEvents: "none" }}>

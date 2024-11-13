@@ -1,4 +1,4 @@
-import react from "@vitejs/plugin-react";
+import preact from "@preact/preset-vite";
 import path from "path";
 import { env } from "process";
 import { defineConfig } from "vite";
@@ -12,7 +12,7 @@ const langBuildWatcher = watch({
 
 export default defineConfig({
 	base: "./",
-	plugins: env.USE_HTTPS ? [react(), mkcert(), langBuildWatcher] : [react(), langBuildWatcher],
+	plugins: env.USE_HTTPS ? [preact(), mkcert(), langBuildWatcher] : [preact(), langBuildWatcher],
 	build: {
 		rollupOptions: {
 			output: {

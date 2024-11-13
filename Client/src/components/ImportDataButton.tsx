@@ -28,4 +28,6 @@ export const onImportData = (file: File | null) => {
  *
  * @returns A JSX element representing the import data button.
  */
-export const ImportDataButton = () => <input type="file" onChange={(e) => onImportData(e.target.files?.[0] ?? null)} />;
+export const ImportDataButton = () => (
+	<input type="file" onChange={(e) => onImportData((e.target as { files?: File[] })?.files?.[0] ?? null)} />
+);

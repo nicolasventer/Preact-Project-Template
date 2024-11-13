@@ -1,7 +1,6 @@
 import { flushSync } from "preact/compat";
 import { LANGUAGES, type LanguageType } from "../Common/CommonModel";
 import { _isLanguageLoading, globalState } from "../context/GlobalState";
-import { useReact } from "../hooks/useReact";
 
 const LanguageDisplay: Record<LanguageType, string> = {
 	en: "English",
@@ -29,8 +28,6 @@ export const LanguageButton = ({
 			setTimeout(() => void ((globalState.language.value = language), onClick?.(language)), 100);
 		}
 	};
-	useReact(_isLanguageLoading);
-	useReact(globalState.language);
 
 	return (
 		<select

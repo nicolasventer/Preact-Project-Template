@@ -2,7 +2,6 @@ import { signal } from "@preact/signals";
 import { flushSync } from "preact/compat";
 import type { ColorSchemeType } from "../Common/CommonModel";
 import { globalState } from "../context/GlobalState";
-import { useReact } from "../hooks/useReact";
 
 const isColorSchemeLoading = signal(false);
 
@@ -28,9 +27,6 @@ export const DarkModeButton = ({
 			);
 		}
 	};
-
-	useReact(isColorSchemeLoading);
-	useReact(globalState.colorScheme);
 
 	return (
 		<button
