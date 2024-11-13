@@ -1,10 +1,7 @@
-import { ActionIcon, Button, Popover, Select } from "@mantine/core";
-import { Languages } from "lucide-react";
 import { flushSync } from "preact/compat";
 import { LANGUAGES, type LanguageType } from "../Common/CommonModel";
 import { _isLanguageLoading, globalState } from "../context/GlobalState";
 import { useReact } from "../hooks/useReact";
-import { Vertical } from "../utils/ComponentToolbox";
 
 const LanguageDisplay: Record<LanguageType, string> = {
 	en: "English",
@@ -36,59 +33,16 @@ export const LanguageButton = ({
 	useReact(globalState.language);
 
 	return (
-		<Popover position="bottom-end" withArrow>
-			<Popover.Target>
-				<ActionIcon loading={useTransition && _isLanguageLoading.value}>
-					<Languages />
-				</ActionIcon>
-			</Popover.Target>
-			<Popover.Dropdown p={8}>
-				<Vertical gap={8}>
-					{LANGUAGES.map((language) => (
-						<Button
-							key={language}
-							onClick={setLanguageFn(language)}
-							variant={language === globalState.language.value ? "filled" : "light"}
-						>
-							{LanguageDisplay[language]}
-						</Button>
-					))}
-				</Vertical>
-			</Popover.Dropdown>
-		</Popover>
-	);
-};
-
-/**
- * A button that changes the language of the application
- * @param params Parameters
- * @param params.useTransition If the language change should use a transition
- * @param params.onClick On click event
- * @returns The language button
- */
-export const LanguageButton2 = ({
-	useTransition,
-	onClick,
-}: {
-	useTransition: boolean;
-	onClick?: (language: LanguageType) => void;
-}) => {
-	const setLanguageFn = (language: LanguageType) => () => {
-		if (useTransition) {
-			document.startViewTransition(() => flushSync(() => void ((globalState.language.value = language), onClick?.(language))));
-		} else {
-			setTimeout(() => void ((globalState.language.value = language), onClick?.(language)), 100);
-		}
-	};
-
-	return (
-		<Select
-			label="Language"
-			data={LANGUAGES.map((language) => ({ value: language, label: LanguageDisplay[language] }))}
+		<select
 			value={globalState.language.value}
-			onChange={(value) => setLanguageFn(value as LanguageType)()}
-			allowDeselect={false}
-			comboboxProps={{ withinPortal: false }}
-		/>
+			onChange={(e) => setLanguageFn(e.currentTarget.value as LanguageType)()}
+			disabled={_isLanguageLoading.value}
+		>
+			{LANGUAGES.map((language) => (
+				<option key={language} value={language}>
+					{LanguageDisplay[language]}
+				</option>
+			))}
+		</select>
 	);
 };

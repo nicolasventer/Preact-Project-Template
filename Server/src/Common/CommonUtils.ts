@@ -1,5 +1,3 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
-
 /** The type of an object with the keys as the values of the enum. */
 export type EnumObj<T extends Readonly<string>> = { [K in T]: K };
 
