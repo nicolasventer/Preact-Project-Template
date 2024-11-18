@@ -3,6 +3,9 @@ import type { ColorSchemeType, DynDict, LanguageType, Log, TranslationCategoryTy
 import type { Tr } from "../tr/en";
 import type { SignalToValue } from "../utils/signalUtils";
 
+/** the key of the local storage */
+export const LOCAL_STORAGE_KEY = "template_globalState" as const;
+
 /** The type of the global state of the application. */
 export type GlobalState = {
 	/** the color scheme of the application */
@@ -38,8 +41,19 @@ export type GlobalState = {
 
 type LocalStorageState = SignalToValue<Pick<GlobalState, "colorScheme" | "language" | "isConsoleDisplayed" | "consoleHeight">>;
 
-const loadGlobalState = (): GlobalState => {
-	const storedGlobalState = JSON.parse(localStorage.getItem("globalState") ?? "{}") as Partial<SignalToValue<LocalStorageState>>;
+/**
+ * Load the global state from the local storage. Can be called to fully set the global state.
+ * @returns The new global state. Still needs to be assigned to the global state.
+ * @example
+ * localStorage.setItem("globalState", JSON.stringify({ colorScheme: "light" }));
+ * const newGlobalState = loadGlobalState();
+ * Object.assign(globalState, newGlobalState);
+ * setTimeout(() => window.location.reload(), 2000); // refresh the page
+ */
+export const loadGlobalState = (): GlobalState => {
+	const storedGlobalState = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) ?? "{}") as Partial<
+		SignalToValue<LocalStorageState>
+	>;
 
 	return {
 		colorScheme: signal(storedGlobalState.colorScheme ?? "dark"),
@@ -118,6 +132,6 @@ export const xsSm = computed(() => (globalState.isAboveMd.value ? "sm" : "xs"));
 /** "compact-md" if the screen is above md, "compact-sm" otherwise. */
 export const compactXsSm = computed(() => `compact-${xsSm.value}`);
 
-effect(() => localStorage.setItem("globalState", JSON.stringify(localStorageState.value)));
+effect(() => localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(localStorageState.value)));
 
 effect(() => void document.body.classList.toggle("dark", globalState.colorScheme.value === "dark"));

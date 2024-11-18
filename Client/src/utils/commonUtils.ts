@@ -95,6 +95,24 @@ export const tryParseJson = <T>(jsonString: string, defaultValue: T) => {
 };
 
 /**
+ * Save a blob as a file with a filename.
+ * @param blob blob to save
+ * @param filename filename of the file
+ * @example
+ * saveAs(new Blob(["Hello, world!"], { type: "text/plain" }), "hello.txt");
+ * saveAs(new Blob([JSON.stringify({ hello: "world" })], { type: "application/json" }), "hello.json");
+ */
+export const saveAs = (blob: Blob, filename: string) => {
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement("a");
+	a.href = url;
+	a.download = filename;
+	a.click();
+	URL.revokeObjectURL(url);
+	a.remove();
+};
+
+/**
  * Returns a string that represents the difference between two objects.
  * The format of the string is: 'path: value1 --> value2'. For undefined values, '___' is used.
  * @param obj1 first object
