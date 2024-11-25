@@ -128,7 +128,14 @@ export const CustomConsole = ({ resizable = true }: { resizable?: boolean }) => 
 										</Text>
 										<Text style={{ whiteSpace: "pre", fontFamily: "consolas" }}>[{log.time}]</Text>
 										<Tooltip label="Press Alt+Z to toggle wrap" hidden={log.message.length < 100}>
-											<Text style={{ whiteSpace: "pre", fontFamily: "consolas", textWrapMode: isWrap.value ? "wrap" : "nowrap" }}>
+											<Text
+												style={{
+													whiteSpace: "pre",
+													fontFamily: "consolas",
+													textWrapMode: isWrap.value ? "wrap" : "nowrap",
+													overflowWrap: isWrap.value ? "anywhere" : undefined,
+												}}
+											>
 												{log.message}
 											</Text>
 										</Tooltip>

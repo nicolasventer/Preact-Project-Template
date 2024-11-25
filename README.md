@@ -58,7 +58,13 @@ The script will create a symbolic link between the `Common` folder of the `Clien
 If you want to install the dependencies manually, you should at least create the symbolic link:
 
 ```bat
-mklink /J "Client/src/Common" "Server/src/Common"
+mk_link.bat
+```
+
+If you only require the client, you can run the following:
+
+```bat
+copy_common.bat
 ```
 
 ### On Linux
@@ -75,8 +81,13 @@ The script will create a symbolic link between the `Common` folder of the `Clien
 If you want to install the dependencies manually, you should at least create the symbolic link:
 
 ```sh
-cd ../Client/src
-ln -s ../../Server/src/Common .
+mk_link.sh
+```
+
+If you only require the client, you can run the following:
+
+```sh
+copy_common.sh
 ```
 
 ## Usage

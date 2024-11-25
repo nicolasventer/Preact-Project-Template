@@ -5,7 +5,7 @@ import { saveAs } from "../utils/commonUtils";
 import { signalToValue } from "../utils/signalUtils";
 
 const exportData = () =>
-	saveAs(new Blob([JSON.stringify(signalToValue(globalState))], { type: "application/json" }), "applydoc.json");
+	saveAs(new Blob([JSON.stringify(signalToValue(globalState))], { type: "application/json" }), "export.json");
 
 export const ExportDataButton = () => (
 	<ActionIcon variant="transparent" onClick={exportData}>
