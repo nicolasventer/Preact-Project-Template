@@ -7,7 +7,9 @@ import { clientEnv } from "./clientEnv";
 import { globalState } from "./context/GlobalState";
 import { HomePage } from "./pages/exports_";
 import type { HomePage as _HomePage } from "./pages/Home";
+import { NotFoundPage } from "./pages/NotFound";
 import { WriteToolboxClasses } from "./utils/ComponentToolbox";
+import { Switch } from "./utils/MultiIf";
 
 const theme = createTheme({});
 
@@ -30,9 +32,13 @@ export const App = () => {
 	return (
 		<>
 			<WriteToolboxClasses />
-			<Toaster position="bottom-center" toastOptions={{ duration: 2000 }} />
 			<MantineProvider theme={theme} forceColorScheme={globalState.colorScheme.value}>
-				{url.pathname === `${clientEnv.BASE_URL}/` && <HomePage />}
+				<Toaster position="bottom-center" toastOptions={{ duration: 2000 }} />
+				<Switch
+					value={url.pathname}
+					branches={[{ case: `${clientEnv.BASE_URL}/`, then: <HomePage /> }]}
+					default={<NotFoundPage />}
+				/>
 			</MantineProvider>
 		</>
 	);
