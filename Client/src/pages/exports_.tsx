@@ -1,23 +1,8 @@
-import { lazy, Suspense } from "react";
-import type { HomePage as _HomePage } from "./Home";
+import { importProxy } from "../utils/importProxy";
 
-type Params<T> = T extends (...args: [infer U]) => any ? U : Record<string, never>;
+// pages
 
-const Suspender = <T extends (...args: any) => any>(Comp: T) => {
-	const Suspended = (props: Params<T>) => (
-		<Suspense fallback>
-			<Comp {...props} />
-		</Suspense>
-	);
-	return Suspended;
-};
+export const { HomePage } = importProxy(() => import("./Home"));
+export const { NotFoundPage } = importProxy(() => import("./NotFound"));
 
-const defaultLoader =
-	<T extends Record<string, any>>(defaultExport: keyof T) =>
-	(mod: T) =>
-		mod[defaultExport];
-
-// Pages
-
-/** Lazy export of {@link _HomePage | HomePage} */
-export const HomePage = Suspender(lazy(() => import("./Home").then(defaultLoader("HomePage"))));
+// components
