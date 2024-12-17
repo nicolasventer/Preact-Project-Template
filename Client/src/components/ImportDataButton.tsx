@@ -3,6 +3,11 @@ import { FileJson } from "lucide-react";
 import toast from "react-hot-toast";
 import { globalState, loadGlobalState, LOCAL_STORAGE_KEY } from "../context/GlobalState";
 
+/**
+ * Handles the import of global state data from a JSON file.
+ *
+ * @param file - The file to be imported.
+ */
 export const onImportData = (file: File | null) => {
 	if (!file) return;
 	const reader = new FileReader();
@@ -21,6 +26,11 @@ export const onImportData = (file: File | null) => {
 	reader.readAsText(file);
 };
 
+/**
+ * A button component that allows users to import global state data from a JSON file.
+ *
+ * @returns A JSX element representing the import data button.
+ */
 export const ImportDataButton = () => (
 	<FileInput
 		label="Import data"

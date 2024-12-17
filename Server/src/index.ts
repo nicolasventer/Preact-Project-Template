@@ -7,16 +7,18 @@ import Watcher from "watcher";
 import { PORT, SRV_URL } from "./Common/CommonConfig";
 
 const CLIENT_PATH = path.join(__dirname, "../../Client");
-const DIST_PATH = path.join(CLIENT_PATH, "dist");
-const DOCS_PATH = path.join(CLIENT_PATH, "docs");
+const DIST_SUBPATH = "dist" as const;
+const DIST_PATH = path.join(CLIENT_PATH, DIST_SUBPATH);
+const DOC_SUBPATH = "typedoc_out" as const;
+const DOC_PATH = path.join(CLIENT_PATH, DOC_SUBPATH);
 
 const distFiles = existsSync(DIST_PATH)
 	? readdirSync(DIST_PATH, { withFileTypes: true, recursive: true })
 			.filter((file) => file.isFile())
 			.map((file) => path.join(file.parentPath, file.name))
 	: [];
-const docsFiles = existsSync(DOCS_PATH)
-	? readdirSync(DOCS_PATH, { withFileTypes: true, recursive: true })
+const docsFiles = existsSync(DOC_PATH)
+	? readdirSync(DOC_PATH, { withFileTypes: true, recursive: true })
 			.filter((file) => file.isFile())
 			.map((file) => path.join(file.parentPath, file.name))
 	: [];
@@ -43,7 +45,7 @@ const filesStatSize = await (async () => {
 })();
 
 const watcher = new Watcher(DIST_PATH, { recursive: true, native: true });
-watcher.watch(DOCS_PATH, { recursive: true, native: true });
+watcher.watch(DOC_PATH, { recursive: true, native: true });
 
 const updateFile = (filename: string) => {
 	const oldSize = filesStatSize[filename];
@@ -74,6 +76,7 @@ const mimeTypes = {
 	".html": "text/html",
 	".css": "text/css",
 	".js": "application/javascript",
+	".js.map": "application/json",
 	".json": "application/json",
 	".png": "image/png",
 	".jpg": "image/jpeg",
@@ -96,8 +99,16 @@ export const app = new Elysia()
 	.use(cors())
 	.use(swagger())
 	.get("*", (req) => {
-		const reqPath = req.path.startsWith("/dist/") || req.path.startsWith("/docs/") ? req.path : `/dist${req.path}`;
-		const pathname = reqPath === "/dist/" ? "/dist/index.html" : reqPath === "/docs/" ? "/docs/index.html" : reqPath;
+		const reqPath =
+			req.path.startsWith(`/${DIST_SUBPATH}/`) || req.path.startsWith(`/${DOC_SUBPATH}/`)
+				? req.path
+				: `/${DIST_SUBPATH}${req.path}`;
+		const pathname =
+			reqPath === `/${DIST_SUBPATH}/`
+				? `/${DIST_SUBPATH}/index.html`
+				: reqPath === `/${DOC_SUBPATH}/`
+				? `/${DOC_SUBPATH}/index.html`
+				: reqPath;
 		const joinedPath = path.join(CLIENT_PATH, pathname);
 		console.log("joinedPath:", joinedPath);
 		if (files.includes(joinedPath))
@@ -114,3 +125,5 @@ export const app = new Elysia()
 export type App = typeof app;
 
 console.log(`Server started on ${SRV_URL}`);
+console.log(`Docs available on ${SRV_URL}/${DOC_SUBPATH}/`);
+console.log(`Swagger available on ${SRV_URL}/swagger`);
