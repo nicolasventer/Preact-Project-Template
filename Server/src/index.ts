@@ -1,4 +1,5 @@
 import cors from "@elysiajs/cors";
+import type { treaty } from "@elysiajs/eden";
 import swagger from "@elysiajs/swagger";
 import Elysia from "elysia";
 import { closeSync, existsSync, fstatSync, openSync, readdirSync } from "fs";
@@ -119,10 +120,11 @@ export const app = new Elysia()
 	.listen(PORT);
 
 /**
- * @ignore See documentation in the swagger description.
- * The type of the Elysia server.
+ * @ignore
+ * The type of the API (copy-pasted from the client).
  */
-export type App = typeof app;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type Api = ReturnType<typeof treaty<typeof app>>["api"];
 
 console.log(`Server started on ${SRV_URL}`);
 console.log(`Docs available on ${SRV_URL}/${DOC_SUBPATH}/`);

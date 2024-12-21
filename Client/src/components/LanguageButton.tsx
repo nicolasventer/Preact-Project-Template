@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Popover } from "@mantine/core";
+import { ActionIcon, Button, Popover, Select } from "@mantine/core";
 import { Languages } from "lucide-react";
 import { flushSync } from "preact/compat";
 import { LANGUAGES, type LanguageType } from "../Common/CommonModel";
@@ -53,5 +53,39 @@ export const LanguageButton = ({
 				</Vertical>
 			</Popover.Dropdown>
 		</Popover>
+	);
+};
+
+/**
+ * A button that changes the language of the application
+ * @param params Parameters
+ * @param params.useTransition If the language change should use a transition
+ * @param params.onClick On click event
+ * @returns The language button
+ */
+export const LanguageButton2 = ({
+	useTransition,
+	onClick,
+}: {
+	useTransition: boolean;
+	onClick?: (language: LanguageType) => void;
+}) => {
+	const setLanguageFn = (language: LanguageType) => () => {
+		if (useTransition) {
+			document.startViewTransition(() => flushSync(() => void ((globalState.language.value = language), onClick?.(language))));
+		} else {
+			setTimeout(() => void ((globalState.language.value = language), onClick?.(language)), 100);
+		}
+	};
+
+	return (
+		<Select
+			label="Language"
+			data={LANGUAGES.map((language) => ({ value: language, label: LanguageDisplay[language] }))}
+			value={globalState.language.value}
+			onChange={(value) => setLanguageFn(value as LanguageType)()}
+			allowDeselect={false}
+			comboboxProps={{ withinPortal: false }}
+		/>
 	);
 };
