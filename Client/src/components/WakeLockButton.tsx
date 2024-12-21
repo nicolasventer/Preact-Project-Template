@@ -3,7 +3,7 @@ import { effect, signal } from "@preact/signals";
 import { Lock, LockOpen } from "lucide-react";
 import toast from "react-hot-toast";
 import { globalState } from "../context/GlobalState";
-import { widthSizeObj } from "../utils/commonUtils";
+import { widthSizeObj } from "../utils/clientUtils";
 
 const isWakeLockAvailable = "wakeLock" in navigator || "keepAwake" in screen;
 

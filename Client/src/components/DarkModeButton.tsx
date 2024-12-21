@@ -4,7 +4,7 @@ import { Moon, Sun } from "lucide-react";
 import { flushSync } from "preact/compat";
 import type { ColorSchemeType } from "../Common/CommonModel";
 import { globalState } from "../context/GlobalState";
-import { widthSizeObj } from "../utils/commonUtils";
+import { widthSizeObj } from "../utils/clientUtils";
 
 const isColorSchemeLoading = signal(false);
 

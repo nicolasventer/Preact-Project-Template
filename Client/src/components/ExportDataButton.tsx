@@ -1,7 +1,7 @@
 import { ActionIcon } from "@mantine/core";
 import { Save } from "lucide-react";
 import { globalState, LOCAL_STORAGE_KEY } from "../context/GlobalState";
-import { saveAs } from "../utils/commonUtils";
+import { saveAs } from "../utils/clientUtils";
 import { signalToValue } from "../utils/signalUtils";
 
 /**

@@ -123,8 +123,7 @@ export const app = new Elysia()
  * @ignore
  * The type of the API (copy-pasted from the client).
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type Api = ReturnType<typeof treaty<typeof app>>["api"];
+export type Api = ReturnType<typeof treaty<typeof app>>["api"];
 
 console.log(`Server started on ${SRV_URL}`);
 console.log(`Docs available on ${SRV_URL}/${DOC_SUBPATH}/`);

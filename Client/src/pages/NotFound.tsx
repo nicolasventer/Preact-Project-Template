@@ -1,8 +1,8 @@
 import { Text, Title } from "@mantine/core";
 import { useEffect } from "react";
+import { wait } from "../Common/CommonUtils";
 import { tr } from "../context/GlobalState";
 import { FullViewport, Horizontal, Vertical } from "../utils/ComponentToolbox";
-import { wait } from "../utils/commonUtils";
 
 /**
  * Not found page.

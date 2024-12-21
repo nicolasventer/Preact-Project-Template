@@ -1,5 +1,5 @@
 import { effect, signal, Signal } from "@preact/signals";
-import { objDiffStr } from "./commonUtils";
+import { objDiffStr } from "./clientUtils";
 
 /**
  * Type corresponding to the value of a signal.
