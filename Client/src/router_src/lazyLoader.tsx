@@ -40,7 +40,7 @@ export const lazyLoader = <T extends object>(importFn: () => Promise<T>) => {
 	};
 
 	const getComponent = <U extends FCKeys<T>>(key: U) =>
-		Suspender(lazy(() => load().then((modValue) => modValue[key] as FunctionComponent))) as T[U];
+		Suspender(lazy(() => load().then((modValue) => ({ default: modValue[key] as FunctionComponent })))) as T[U];
 
 	return {
 		/** The function to get the component. */
@@ -91,7 +91,7 @@ export const lazySingleLoader = <T extends object, U extends FCKeys<T>>(
 		return new Promise<T>((resolve) => resolve(mod_.value!));
 	};
 
-	const Component = Suspender(lazy(() => load().then((modValue) => modValue[key] as FunctionComponent))) as T[U];
+	const Component = Suspender(lazy(() => load().then((modValue) => ({ default: modValue[key] as FunctionComponent })))) as T[U];
 
 	return { Component, load, loadingState: loadingState as ReadonlySignal<LoadingState> };
 };

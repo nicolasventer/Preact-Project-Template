@@ -1,7 +1,3 @@
-import { B_PROD } from "./_bProd";
-
-if (!B_PROD) await import("preact/debug");
-
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { clientEnv } from "./clientEnv";

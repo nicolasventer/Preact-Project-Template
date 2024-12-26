@@ -4,6 +4,7 @@ import { Lock, LockOpen } from "lucide-react";
 import toast from "react-hot-toast";
 import { gs } from "../context/GlobalState";
 import { setWakeLock } from "../context/userActions";
+import { useReact } from "../hooks/useReact";
 import { widthSizeObj } from "../utils/clientUtils";
 
 const isWakeLockAvailable = "wakeLock" in navigator || "keepAwake" in screen;
@@ -69,16 +70,21 @@ export const automaticWakeLock = () => {
  * The wake lock button
  * @returns the button to toggle the wake lock
  */
-export const WakeLockButton = () => (
-	<>
-		{isWakeLockAvailable && (
-			<ActionIcon loading={isWakeLockLoading.value} pb={1}>
-				{gs.isWakeLock.value ? (
-					<Lock onClick={toggleWakeLock} width={widthSizeObj(3.5, 6)} />
-				) : (
-					<LockOpen onClick={toggleWakeLock} width={widthSizeObj(3.5, 6)} />
-				)}
-			</ActionIcon>
-		)}
-	</>
-);
+export const WakeLockButton = () => {
+	useReact(isWakeLockLoading);
+	useReact(gs.isWakeLock);
+
+	return (
+		<>
+			{isWakeLockAvailable && (
+				<ActionIcon loading={isWakeLockLoading.value} pb={1}>
+					{gs.isWakeLock.value ? (
+						<Lock onClick={toggleWakeLock} width={widthSizeObj(3.5, 6)} />
+					) : (
+						<LockOpen onClick={toggleWakeLock} width={widthSizeObj(3.5, 6)} />
+					)}
+				</ActionIcon>
+			)}
+		</>
+	);
+};

@@ -4,6 +4,7 @@ import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { globalState, gs } from "../context/GlobalState";
+import { useReact } from "../hooks/useReact";
 import { RouterRender } from "../routerInstance.gen";
 import { FullViewport, WriteToolboxClasses } from "../utils/ComponentToolbox";
 
@@ -23,6 +24,7 @@ export const MainLayout = () => {
 	useEffect(() => void (globalState.isBelowXxs.value = !!isBelowXxs), [isBelowXxs]);
 	useEffect(() => void (globalState.viewportSize.value = { height, width }), [height, width]);
 
+	useReact(globalState.colorScheme);
 	return (
 		<FullViewport>
 			<WriteToolboxClasses />
