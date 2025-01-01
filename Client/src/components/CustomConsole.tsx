@@ -62,7 +62,7 @@ const stopResize = (ev: MouseEvent | TouchEvent) => {
  */
 export const CustomConsole = ({ resizable = true }: { resizable?: boolean }) => (
 	<Overlap height={"100%"} width={"100%"} style={{ position: "absolute", top: 0, pointerEvents: "none" }}>
-		<Vertical justifyContent="flex-end" style={{ zIndex: 200, pointerEvents: "none", margin: "-1px 0" }}>
+		<Vertical justifyContent="flex-end" style={{ zIndex: 200, pointerEvents: "none", margin: "-2px 0" }}>
 			{gs.isConsoleDisplayed.value && (
 				<>
 					{resizable && (
