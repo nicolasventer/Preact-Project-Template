@@ -1,6 +1,6 @@
 import { actions, st } from "@/actions/actions.impl";
 import { CustomConsole } from "@/components/_app/CustomConsole";
-import { RouterRender } from "@/routerInstance.gen";
+import { RouterRender, useRoutes } from "@/routerInstance.gen";
 import { FullViewport, WriteToolboxClasses } from "@/utils/ComponentToolbox";
 import { createTheme, MantineProvider } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
@@ -18,6 +18,7 @@ export const MainLayout = () => {
 
 	return (
 		<FullViewport>
+			{useRoutes()}
 			<WriteToolboxClasses />
 			<MantineProvider theme={theme} forceColorScheme={st.colorScheme.current.value}>
 				<CustomConsole />
