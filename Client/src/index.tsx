@@ -3,7 +3,6 @@ import "preact/debug";
 import { enableApiMock } from "@/api/api.config";
 
 import "@/index.css";
-import "@mantine/core/styles.css";
 
 import { clientEnv } from "@/clientEnv";
 import { setRouterBaseRoute } from "@/routerInstance.gen";

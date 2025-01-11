@@ -1,9 +1,7 @@
 import { actions, st } from "@/actions/actions.impl";
+import type { Log } from "@/actions/actions.types";
 import { Horizontal, Vertical } from "@/utils/ComponentToolbox";
-import { ActionIcon, Button, Indicator, Paper, Text, ThemeIcon, Tooltip } from "@mantine/core";
 import { signal } from "@preact/signals";
-import { GripHorizontal } from "lucide-react";
-import { GrClear } from "react-icons/gr";
 
 document.addEventListener("keydown", (ev) => {
 	if (ev.key === "z" && ev.altKey) actions.console.log.wrap.toggle();
@@ -12,6 +10,15 @@ document.addEventListener("keydown", (ev) => {
 const isHandleHovered = signal(false);
 const enableHandleHovered = () => (isHandleHovered.value = true);
 const disableHandleHovered = () => (isHandleHovered.value = false);
+
+let tooltipDisplayed = false;
+const logTooltip = (log: Log) => {
+	if (tooltipDisplayed) return null;
+	if (log.message.length < 100) return null;
+	tooltipDisplayed = true;
+	console.info("Press Alt+Z to toggle wrap");
+	return null;
+};
 
 /**
  * The console that displays the execution log and errors, it can be resized and hidden.\
@@ -38,32 +45,33 @@ export const CustomConsole = ({ resizable = true }: { resizable?: boolean }) => 
 		{st.console.isDisplayed.value && (
 			<>
 				{resizable && (
-					<Paper
+					<div
 						onMouseDown={actions.console.height.startUpdating}
 						onMouseEnter={enableHandleHovered}
 						onMouseLeave={disableHandleHovered}
 						onTouchStart={actions.console.height.startUpdating}
 						style={{
 							cursor: "ns-resize",
-							backgroundColor:
-								isHandleHovered.value || st.console.isResizing.value ? "var(--mantine-primary-color-filled)" : undefined,
+							backgroundColor: isHandleHovered.value || st.console.isResizing.value ? "grey" : undefined,
 							borderRadius: 0,
 							display: "flex",
 							justifyContent: "center",
 							pointerEvents: "auto",
 							borderBottom: 0,
 							userSelect: "none",
+							border: "1px solid black",
 						}}
-						withBorder
 					>
-						<ThemeIcon size="xs" variant="transparent">
-							<GripHorizontal />
-						</ThemeIcon>
-					</Paper>
+						---
+					</div>
 				)}
-				<Paper
-					withBorder
-					style={{ height: resizable ? st.console.height.value : "100%", pointerEvents: "auto", overflow: "auto" }}
+				<div
+					style={{
+						height: resizable ? st.console.height.value : "100%",
+						pointerEvents: "auto",
+						overflow: "auto",
+						border: "1px solid black",
+					}}
 				>
 					{st.console.log.list.value.map((log, index) => {
 						const isLogToSee = st.console.log.list.value.length - index <= st.console.log.toSeeCount.value;
@@ -75,53 +83,47 @@ export const CustomConsole = ({ resizable = true }: { resizable?: boolean }) => 
 								gap={8}
 								style={{
 									padding: "4px 8px",
-									background: isLogToSee ? "var(--mantine-primary-color-light)" : undefined,
+									background: isLogToSee ? "lightblue" : undefined,
 									cursor: isLogToSee ? "pointer" : undefined,
 								}}
 								alignItems="baseline"
 								onClick={updateLogToSeeCount}
 							>
-								<Text
-									c={log.type === "error" ? "red" : log.type === "warn" ? "yellow" : log.type === "info" ? "blue" : "gray"}
-									style={{ whiteSpace: "pre", fontFamily: "consolas" }}
+								<div
+									style={{
+										whiteSpace: "pre",
+										fontFamily: "consolas",
+										color: log.type === "error" ? "red" : log.type === "warn" ? "yellow" : log.type === "info" ? "blue" : "gray",
+									}}
 								>
 									{`[${log.type}]`.padEnd(7)}
-								</Text>
-								<Text style={{ whiteSpace: "pre", fontFamily: "consolas" }}>[{log.time}]</Text>
-								<Tooltip label="Press Alt+Z to toggle wrap" hidden={log.message.length < 100}>
-									<Text
-										style={{
-											whiteSpace: "pre",
-											fontFamily: "consolas",
-											textWrapMode: st.console.log.isWrapped.value ? "wrap" : "nowrap",
-											overflowWrap: st.console.log.isWrapped.value ? "anywhere" : undefined,
-										}}
-									>
-										{log.message}
-									</Text>
-								</Tooltip>
+								</div>
+								<div style={{ whiteSpace: "pre", fontFamily: "consolas" }}>[{log.time}]</div>
+								<div
+									style={{
+										whiteSpace: "pre",
+										fontFamily: "consolas",
+										textWrap: st.console.log.isWrapped.value ? "wrap" : "nowrap",
+										overflowWrap: st.console.log.isWrapped.value ? "anywhere" : undefined,
+									}}
+								>
+									{logTooltip(log)}
+									{log.message}
+								</div>
 							</Horizontal>
 						);
 					})}
-				</Paper>
+				</div>
 			</>
 		)}
-		<Horizontal gap={12} style={{ background: "var(--mantine-color-body)" }}>
-			<Indicator
-				label={st.console.log.toSeeCount.value}
-				disabled={st.console.log.toSeeCount.value === 0}
-				color={"red"}
-				position="top-end"
-				size={25}
-				flex={1}
-			>
-				<Button onClick={actions.console.display.toggle} size="compact-xs" style={{ pointerEvents: "auto" }} fullWidth>
-					Console
-				</Button>
-			</Indicator>
-			<ActionIcon size={24} style={{ margin: "-6px 0", scale: 0.8, pointerEvents: "auto" }} onClick={actions.console.log.clear}>
-				<GrClear />
-			</ActionIcon>
+		<Horizontal gap={12} style={{ background: "white" }}>
+			<button onClick={actions.console.display.toggle} style={{ pointerEvents: "auto", flex: 1 }}>
+				Console
+			</button>
+			{st.console.log.toSeeCount.value !== 0 && <div style={{ color: "red" }}>{st.console.log.toSeeCount.value}</div>}
+			<button onClick={actions.console.log.clear} style={{ pointerEvents: "auto" }}>
+				Clear
+			</button>
 		</Horizontal>
 	</Vertical>
 );
