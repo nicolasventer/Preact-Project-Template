@@ -3,9 +3,7 @@ import { tr } from "@/gs";
 import { navigateToRouteFn } from "@/routerInstance.gen";
 import { Horizontal, Vertical } from "@/utils/ComponentToolbox";
 import { useMount } from "@/utils/useMount";
-import { Button, Text, Title } from "@mantine/core";
 import { useSignal } from "@preact/signals";
-import toast from "react-hot-toast";
 
 /**
  * Not found page.
@@ -15,24 +13,22 @@ import toast from "react-hot-toast";
  */
 export const NotFoundPage = () => {
 	const cancelled = useSignal(false);
-	const cancel = () => {
-		cancelled.value = true;
-		toast(tr.v["Redirect cancelled."], { duration: 3000 });
-	};
+	const cancel = () => (cancelled.value = true);
 
 	useMount(() => void wait(3000).then(() => !cancelled.value && navigateToRouteFn("/")()));
 
 	return (
 		<Horizontal justifyContent="center" height="100%">
 			<Vertical justifyContent="center">
-				<Title order={1}>{tr.v["404 Not Found"]}</Title>
-				{!cancelled.value && <Text>{tr.v["Redirecting to the home page..."]}</Text>}
+				<h1>{tr.v["404 Not Found"]}</h1>
+				{!cancelled.value && tr.v["Redirecting to the home page..."]}
+				{cancelled.value && tr.v["Redirect cancelled."]}
 				<Vertical marginTop={20} alignItems="center">
 					<div>
 						{cancelled.value ? (
-							<Button onClick={navigateToRouteFn("/")}>{tr.v["Go to Home page"]}</Button>
+							<button onClick={navigateToRouteFn("/")}>{tr.v["Go to Home page"]}</button>
 						) : (
-							<Button onClick={cancel}>{tr.v.Cancel}</Button>
+							<button onClick={cancel}>{tr.v.Cancel}</button>
 						)}
 					</div>
 				</Vertical>

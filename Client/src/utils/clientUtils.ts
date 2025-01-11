@@ -4,13 +4,12 @@ import { tr } from "@/gs";
 // eslint-disable-next-line project-structure/independent-modules
 import { uniqueSort } from "@/Shared/SharedUtils";
 import type { ChangeEvent, KeyboardEvent } from "react";
-import toast from "react-hot-toast";
 
 /**
  * Creates a toast that says the given description is not implemented yet
  * @param description the description of the feature that is not implemented yet
  */
-export const TodoFn = (description: string) => () => toast(`${description} ${tr.v["is not implemented yet"]}`, { icon: "⏳" });
+export const TodoFn = (description: string) => () => console.info(`${description} ${tr.v["is not implemented yet"]}`, "⏳");
 
 /**
  * Function that returns the given value, should be temporary until the value is defined in a constant
