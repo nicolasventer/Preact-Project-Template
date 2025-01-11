@@ -1,8 +1,5 @@
 import { actions, st } from "@/actions/actions.impl";
 import { LANGUAGES, type LanguageType } from "@/Shared/SharedModel";
-import { Vertical } from "@/utils/ComponentToolbox";
-import { ActionIcon, Button, Popover, Select } from "@mantine/core";
-import { Languages } from "lucide-react";
 
 const LanguageDisplay: Record<LanguageType, string> = {
 	en: "English",
@@ -10,36 +7,15 @@ const LanguageDisplay: Record<LanguageType, string> = {
 };
 
 export const LanguageButton = ({ useTransition }: { useTransition: boolean }) => (
-	<Popover position="bottom-end" withArrow>
-		<Popover.Target>
-			<ActionIcon loading={useTransition && st.language.isLoading.value}>
-				<Languages />
-			</ActionIcon>
-		</Popover.Target>
-		<Popover.Dropdown p={8}>
-			<Vertical gap={8}>
-				{LANGUAGES.map((language) => (
-					<Button
-						key={language}
-						onClick={actions.language.updateFn(language, useTransition)}
-						variant={language === st.language.current.value ? "filled" : "light"}
-					>
-						{LanguageDisplay[language]}
-					</Button>
-				))}
-			</Vertical>
-		</Popover.Dropdown>
-	</Popover>
-);
-
-export const LanguageButton2 = ({ useTransition }: { useTransition: boolean }) => (
-	<Select
-		label="Language"
-		data={LANGUAGES.map((language) => ({ value: language, label: LanguageDisplay[language] }))}
+	<select
 		value={st.language.current.value}
-		onChange={(value) => actions.language.updateFn(value as LanguageType, useTransition)()}
-		allowDeselect={false}
-		comboboxProps={{ withinPortal: false }}
+		onChange={(ev) => actions.language.updateFn(ev.currentTarget.value as LanguageType, useTransition)()}
 		disabled={st.language.isLoading.value}
-	/>
+	>
+		{LANGUAGES.map((language) => (
+			<option key={language} value={language}>
+				{LanguageDisplay[language]}
+			</option>
+		))}
+	</select>
 );
