@@ -1,5 +1,4 @@
 import "@/index.css";
-import "@mantine/core/styles.css";
 
 import { enableApiMock } from "@/api/api.config";
 import { clientEnv } from "@/clientEnv";
