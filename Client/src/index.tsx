@@ -1,6 +1,10 @@
+import { enableApiMock } from "@/api/api.config";
+import { B_PROD } from "@/Shared/bProd.gen";
+
+if (!B_PROD) await import("preact/debug").catch(() => {});
+
 import "@/index.css";
 
-import { enableApiMock } from "@/api/api.config";
 import { clientEnv } from "@/clientEnv";
 import { setRouterBaseRoute } from "@/routerInstance.gen";
 import { MainLayout } from "@/routes";
