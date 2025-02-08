@@ -1,20 +1,31 @@
-import type { ViewportSize } from "@/Actions/actions.types";
+import type { Log, ViewportSize } from "@/Actions/actions.types";
 import { globalState } from "@/globalState";
 import { signalArray } from "@/libs/StrongBox/signalUtils";
-import type { Log } from "@/Shared/SharedModel";
 import { computed, signal } from "@preact/signals";
 
 export const state = {
-	colorScheme: globalState.colorScheme,
-	language: globalState.language,
-	isLanguageLoading: signal(false),
-	isConsoleDisplayed: globalState.isConsoleDisplayed,
-	consoleHeight: globalState.consoleHeight,
-	isConsoleResizing: signal(false),
-	logList: signalArray<Log>([]),
-	isLogWrapped: signal(false),
-	logToSeeCount: signal(0),
-	isWakeLock: signal(false),
+	colorScheme: {
+		current: globalState.colorScheme,
+		isLoading: signal(false),
+	},
+	language: {
+		current: globalState.language,
+		isLoading: signal(false),
+	},
+	console: {
+		isDisplayed: globalState.isConsoleDisplayed,
+		height: globalState.consoleHeight,
+		isResizing: signal(false),
+		log: {
+			list: signalArray<Log>([]),
+			toSeeCount: signal(0),
+			isWrapped: signal(false),
+		},
+	},
+	wakeLock: {
+		isEnabled: signal(false),
+		isLoading: signal(false),
+	},
 	viewportSize: signal<ViewportSize>({ height: 0, width: 0 }),
 };
 

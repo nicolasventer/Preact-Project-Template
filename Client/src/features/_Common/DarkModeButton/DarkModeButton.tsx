@@ -1,11 +1,7 @@
-import { setColorSchemeFn } from "@/features/_Common/common.setters";
-import { gs } from "@/gs";
+import { actions, st } from "@/Actions/actions.impl";
 import { widthSizeObj } from "@/libs/StrongBox/clientUtils";
 import { ActionIcon } from "@mantine/core";
-import { signal } from "@preact/signals";
 import { Moon, Sun } from "lucide-react";
-
-const isColorSchemeLoading = signal(false);
 
 /**
  * A button that toggles between light and dark mode
@@ -14,20 +10,20 @@ const isColorSchemeLoading = signal(false);
  * @returns a button that toggles between light and dark mode
  */
 export const DarkModeButton = ({ useTransition }: { useTransition: boolean }) => (
-	<ActionIcon loading={isColorSchemeLoading.value}>
-		{gs.colorScheme.value === "dark" && (
+	<ActionIcon loading={st.colorScheme.isLoading.value}>
+		{st.colorScheme.current.value === "dark" && (
 			<Sun
 				width={widthSizeObj(3.5, 6)}
 				id={"light-mode-button"}
-				onClick={setColorSchemeFn("light", useTransition, isColorSchemeLoading)}
+				onClick={actions.colorScheme.updateFn("light", useTransition)}
 				style={{ marginBottom: 1 }}
 			/>
 		)}
-		{gs.colorScheme.value === "light" && (
+		{st.colorScheme.current.value === "light" && (
 			<Moon
 				width={widthSizeObj(3.5, 6)}
 				id={"dark-mode-button"}
-				onClick={setColorSchemeFn("dark", useTransition, isColorSchemeLoading)}
+				onClick={actions.colorScheme.updateFn("dark", useTransition)}
 				style={{ marginBottom: 1 }}
 			/>
 		)}

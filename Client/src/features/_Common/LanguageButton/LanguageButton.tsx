@@ -1,5 +1,4 @@
-import { setLanguageFn } from "@/features/_Common/common.setters";
-import { gs, isLanguageLoading } from "@/gs";
+import { actions, st } from "@/Actions/actions.impl";
 import { Vertical } from "@/libs/StrongBox/ComponentToolbox";
 import { LANGUAGES, type LanguageType } from "@/Shared/SharedModel";
 import { ActionIcon, Button, Popover, Select } from "@mantine/core";
@@ -19,7 +18,7 @@ const LanguageDisplay: Record<LanguageType, string> = {
 export const LanguageButton = ({ useTransition }: { useTransition: boolean }) => (
 	<Popover position="bottom-end" withArrow>
 		<Popover.Target>
-			<ActionIcon loading={useTransition && isLanguageLoading.value}>
+			<ActionIcon loading={useTransition && st.language.isLoading.value}>
 				<Languages />
 			</ActionIcon>
 		</Popover.Target>
@@ -28,8 +27,8 @@ export const LanguageButton = ({ useTransition }: { useTransition: boolean }) =>
 				{LANGUAGES.map((language) => (
 					<Button
 						key={language}
-						onClick={setLanguageFn(language, useTransition)}
-						variant={language === gs.language.value ? "filled" : "light"}
+						onClick={actions.language.updateFn(language, useTransition)}
+						variant={language === st.language.current.value ? "filled" : "light"}
 					>
 						{LanguageDisplay[language]}
 					</Button>
@@ -49,10 +48,10 @@ export const LanguageButton2 = ({ useTransition }: { useTransition: boolean }) =
 	<Select
 		label="Language"
 		data={LANGUAGES.map((language) => ({ value: language, label: LanguageDisplay[language] }))}
-		value={gs.language.value}
-		onChange={(value) => setLanguageFn(value as LanguageType, useTransition)()}
+		value={st.language.current.value}
+		onChange={(value) => actions.language.updateFn(value as LanguageType, useTransition)()}
 		allowDeselect={false}
 		comboboxProps={{ withinPortal: false }}
-		disabled={isLanguageLoading.value}
+		disabled={st.language.isLoading.value}
 	/>
 );

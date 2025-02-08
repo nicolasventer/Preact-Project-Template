@@ -1,6 +1,6 @@
 import { api } from "@/api/api";
 import type { RecursiveReadOnlySignal, SignalToValue } from "@/libs/StrongBox/signalUtils";
-import type { ColorSchemeType, DynDict, LanguageType, Log, TranslationCategoryType } from "@/Shared/SharedModel";
+import type { ColorSchemeType, DynDict, LanguageType, TranslationCategoryType } from "@/Shared/SharedModel";
 import type { Tr } from "@/tr/en";
 import { computed, effect, signal, Signal } from "@preact/signals";
 
@@ -17,27 +17,10 @@ export type GlobalState = {
 	isConsoleDisplayed: Signal<boolean>;
 	/** the height of the console */
 	consoleHeight: Signal<number>;
-	/** the list of logs */
-	logList: Signal<Log[]>;
-	/** the number of logs to see */
-	logToSeeCount: Signal<number>;
 	/** @ignore */
 	tr: Signal<Tr>;
 	/** the dynamic translation object */
 	trDynDict: Signal<DynDict<string>>;
-	/** if the screen is wake locked */
-	isWakeLock: Signal<boolean>;
-	/** if the screen is above md */
-	isAboveMd: Signal<boolean>;
-	/** if the screen is below xxs */
-	isBelowXxs: Signal<boolean>;
-	/** the size of the viewport */
-	viewportSize: Signal<{
-		/** the height of the viewport */
-		height: number;
-		/** the width of the viewport */
-		width: number;
-	}>;
 };
 
 type LocalStorageState = SignalToValue<Pick<GlobalState, "colorScheme" | "language" | "isConsoleDisplayed" | "consoleHeight">>;
@@ -63,14 +46,8 @@ export const loadGlobalState = (): GlobalState => {
 		language: signal(storedGlobalState.language ?? "en"),
 		isConsoleDisplayed: signal(storedGlobalState.isConsoleDisplayed ?? false),
 		consoleHeight: signal(storedGlobalState.consoleHeight ?? 300),
-		logList: signal([]),
-		logToSeeCount: signal(0),
 		tr: signal({} as Tr), // temporary value
 		trDynDict: signal(defaultDynDict),
-		isWakeLock: signal(false),
-		isAboveMd: signal(false),
-		isBelowXxs: signal(false),
-		viewportSize: signal({ height: 0, width: 0 }),
 	};
 };
 
@@ -130,13 +107,6 @@ const localStorageState = computed(
 		consoleHeight: gs.consoleHeight.value,
 	})
 );
-
-/** "md" if the screen is above md, "sm" otherwise. */
-export const smMd = computed(() => (gs.isAboveMd.value ? "md" : "sm"));
-/** "sm" if the screen is above md, "xs" otherwise. */
-export const xsSm = computed(() => (gs.isAboveMd.value ? "sm" : "xs"));
-/** "compact-md" if the screen is above md, "compact-sm" otherwise. */
-export const compactXsSm = computed(() => `compact-${xsSm.value}`);
 
 effect(() => localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(localStorageState.value)));
 

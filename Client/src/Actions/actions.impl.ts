@@ -1,7 +1,8 @@
-import type { IActions, IColorScheme, IConsole, ILanguage, IViewportSize, IWakeLock } from "@/Actions/actions.interface";
+import type { IActions, IColorScheme, IConsole, IData, ILanguage, IViewportSize, IWakeLock } from "@/Actions/actions.interface";
 import { state } from "@/Actions/actions.state";
 import { ColorSchemeImpl } from "@/Actions/impl/ColorSchemeImpl";
 import { ConsoleImpl } from "@/Actions/impl/ConsoleImpl";
+import { DataImpl } from "@/Actions/impl/DataImpl";
 import { LanguageImpl } from "@/Actions/impl/LanguageImpl";
 import { ViewportSizeImpl } from "@/Actions/impl/ViewportSizeImpl";
 import { WakeLockImpl } from "@/Actions/impl/WakeLockImpl";
@@ -13,6 +14,7 @@ export const st = state as RecursiveReadOnlySignal<typeof state>;
 export const computedSt = {
 	isAboveMd: computed(() => st.viewportSize.value.width >= 992),
 	isBelowXxs: computed(() => st.viewportSize.value.width <= 400),
+	isWakeLockAvailable: "wakeLock" in navigator || "keepAwake" in screen,
 };
 
 export const computedSt2 = {
@@ -30,7 +32,8 @@ class Actions implements IActions {
 		public language: ILanguage,
 		public console: IConsole,
 		public wakeLock: IWakeLock,
-		public viewportSize: IViewportSize
+		public viewportSize: IViewportSize,
+		public data: IData
 	) {}
 }
 
@@ -39,5 +42,6 @@ export const actions: IActions = new Actions(
 	new LanguageImpl(),
 	new ConsoleImpl(),
 	new WakeLockImpl(),
-	new ViewportSizeImpl()
+	new ViewportSizeImpl(),
+	new DataImpl()
 );

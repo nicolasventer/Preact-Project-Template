@@ -5,12 +5,12 @@ import type { LanguageType } from "@/Shared/SharedModel";
 export class LanguageImpl implements ILanguage {
 	updateFn = (language: LanguageType, useTransition: boolean) => () => {
 		if (useTransition) {
-			document.startViewTransition(() => (state.language.value = language));
+			document.startViewTransition(() => (state.language.current.value = language));
 		} else {
-			state.isLanguageLoading.value = true;
+			state.language.isLoading.value = true;
 			setTimeout(() => {
-				state.language.value = language;
-				state.isLanguageLoading.value = false;
+				state.language.current.value = language;
+				state.language.isLoading.value = false;
 			}, 100);
 		}
 	};

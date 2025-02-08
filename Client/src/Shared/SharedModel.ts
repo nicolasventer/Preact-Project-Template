@@ -24,36 +24,6 @@ export const COLOR_SCHEMES_OBJ = {
 export type ColorSchemeType = (typeof COLOR_SCHEMES)[number];
 checkEnumObj<ColorSchemeType>(COLOR_SCHEMES_OBJ);
 
-/** Log types */
-export const LOG_TYPES = ["log", "info", "warn", "error"] as const;
-/**
- * Log type object
- * @enum
- */
-export const LOG_TYPES_OBJ = {
-	/** Log log type */
-	log: "log",
-	/** Info log type */
-	info: "info",
-	/** Warn log type */
-	warn: "warn",
-	/** Error log type */
-	error: "error",
-} as const;
-/** Log type */
-export type LogType = (typeof LOG_TYPES)[number];
-checkEnumObj<LogType>(LOG_TYPES_OBJ);
-
-/** Log type */
-export type Log = {
-	/** The type of the message */
-	type: LogType;
-	/** The time of the message (format: HH:mm:ss.SSS) */
-	time: string;
-	/** The message */
-	message: string;
-};
-
 /** Language values */
 export const LANGUAGES = ["en", "fr"] as const;
 /**

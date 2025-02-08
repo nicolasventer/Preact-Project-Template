@@ -1,7 +1,7 @@
 import type { IConsole } from "@/Actions/actions.interface";
 import { computedState, state } from "@/Actions/actions.state";
-import type { ConsoleType } from "@/Actions/actions.types";
-import type { LogType } from "@/Shared/SharedModel";
+import type { ConsoleType, LogType } from "@/Actions/actions.types";
+import { untracked } from "@preact/signals";
 import type { MouseEventHandler, TouchEventHandler } from "react";
 
 export class ConsoleImpl implements IConsole {
@@ -25,21 +25,19 @@ export class ConsoleImpl implements IConsole {
 					.join(" ")
 			);
 
-	private log_add = (type: LogType, message: string) => {
-		state.logList.value = [
-			...state.logList.peek(),
-			{
+	private log_add = (type: LogType, message: string) =>
+		untracked(() => {
+			state.console.log.list.push({
 				type,
 				message,
 				time: new Date().toISOString().split("T")[1],
-			},
-		];
-		state.logToSeeCount.value = state.logToSeeCount.peek() + 1;
-	};
+			});
+			state.console.log.toSeeCount.value = state.console.log.toSeeCount.peek() + 1;
+		});
 
 	private height_updating = (ev: MouseEvent | TouchEvent) => {
 		ev.stopPropagation();
-		if (!state.isConsoleResizing.value) return;
+		if (!state.console.isResizing.value) return;
 		const clientY = ev instanceof MouseEvent ? ev.clientY : ev.touches[0].clientY;
 		const newHeight = this.startConsoleHeight + this.mousePos.y - clientY;
 		ConsoleImpl.HEIGHT_UPDATE(newHeight, this.startConsoleHeight);
@@ -47,7 +45,7 @@ export class ConsoleImpl implements IConsole {
 
 	private height_stopUpdating = (ev: MouseEvent | TouchEvent) => {
 		ev.stopPropagation();
-		state.isConsoleResizing.value = false;
+		state.console.isResizing.value = false;
 		document.body.removeEventListener("mousemove", this.height_updating);
 		document.body.removeEventListener("mouseup", this.height_stopUpdating);
 		document.body.removeEventListener("touchmove", this.height_updating);
@@ -55,16 +53,15 @@ export class ConsoleImpl implements IConsole {
 	};
 
 	private static HEIGHT_UPDATE = (newHeight: number, startConsoleHeight: number) => {
-		state.consoleHeight.value = Math.max(
+		state.console.height.value = Math.max(
 			computedState.openHeight.value,
 			Math.min(computedState.maxConsoleHeight.value, newHeight)
 		);
 		if (newHeight <= computedState.closeHeight.value) {
-			state.isConsoleDisplayed.value = false;
-			state.consoleHeight.value = startConsoleHeight;
+			state.console.isDisplayed.value = false;
+			state.console.height.value = startConsoleHeight;
 		} else if (newHeight >= computedState.openHeight.value) {
-			state.isConsoleDisplayed.value = true;
-			state.logToSeeCount.value = 0;
+			state.console.isDisplayed.value = true;
 		}
 	};
 
@@ -89,14 +86,17 @@ export class ConsoleImpl implements IConsole {
 		},
 	};
 	display = {
-		toggle: () => (state.isConsoleDisplayed.value = !state.isConsoleDisplayed.value),
+		toggle: () => {
+			state.console.isDisplayed.value = !state.console.isDisplayed.value;
+			if (state.console.isDisplayed.value) state.console.log.toSeeCount.value = 0;
+		},
 	};
 	height = {
 		startUpdating: ((ev) => {
 			ev.stopPropagation();
 			this.mousePos = "clientX" in ev ? { x: ev.clientX, y: ev.clientY } : { x: ev.touches[0].clientX, y: ev.touches[0].clientY };
-			this.startConsoleHeight = state.consoleHeight.value;
-			state.isConsoleResizing.value = true;
+			this.startConsoleHeight = state.console.height.value;
+			state.console.isResizing.value = true;
 			document.body.addEventListener("mousemove", this.height_updating);
 			document.body.addEventListener("mouseup", this.height_stopUpdating);
 			document.body.addEventListener("touchmove", this.height_updating);
@@ -104,10 +104,10 @@ export class ConsoleImpl implements IConsole {
 		}) satisfies MouseEventHandler<HTMLElement> & TouchEventHandler<HTMLElement>,
 	};
 	log = {
-		clear: () => (state.logList.value = []),
-		markAsReadFn: (index: number) => () => (state.logToSeeCount.value = state.logList.value.length - index - 1),
+		clear: () => (state.console.log.list.value = []),
+		markAsReadFn: (index: number) => () => (state.console.log.toSeeCount.value = state.console.log.list.value.length - index - 1),
 		wrap: {
-			toggle: () => (state.isLogWrapped.value = !state.isLogWrapped.value),
+			toggle: () => (state.console.log.isWrapped.value = !state.console.log.isWrapped.value),
 		},
 	};
 }

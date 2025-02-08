@@ -1,16 +1,7 @@
-import { toggleWakeLock } from "@/features/_Common/WakeLockButton/WakeLockButton.utils";
-import { gs } from "@/gs";
+import { actions, computedSt, st } from "@/Actions/actions.impl";
 import { widthSizeObj } from "@/libs/StrongBox/clientUtils";
 import { ActionIcon } from "@mantine/core";
-import { signal } from "@preact/signals";
 import { Lock, LockOpen } from "lucide-react";
-
-const isWakeLockAvailable = "wakeLock" in navigator || "keepAwake" in screen;
-
-const isWakeLockLoading = signal(false);
-
-const isDocumentVisible = signal(document.visibilityState === "visible");
-document.addEventListener("visibilitychange", () => (isDocumentVisible.value = document.visibilityState === "visible"));
 
 /**
  * The wake lock button
@@ -18,12 +9,12 @@ document.addEventListener("visibilitychange", () => (isDocumentVisible.value = d
  */
 export const WakeLockButton = () => (
 	<>
-		{isWakeLockAvailable && (
-			<ActionIcon loading={isWakeLockLoading.value} pb={1}>
-				{gs.isWakeLock.value ? (
-					<Lock onClick={toggleWakeLock} width={widthSizeObj(3.5, 6)} />
+		{computedSt.isWakeLockAvailable && (
+			<ActionIcon loading={st.wakeLock.isLoading.value} pb={1}>
+				{st.wakeLock.isEnabled.value ? (
+					<Lock onClick={actions.wakeLock.toggle} width={widthSizeObj(3.5, 6)} />
 				) : (
-					<LockOpen onClick={toggleWakeLock} width={widthSizeObj(3.5, 6)} />
+					<LockOpen onClick={actions.wakeLock.toggle} width={widthSizeObj(3.5, 6)} />
 				)}
 			</ActionIcon>
 		)}

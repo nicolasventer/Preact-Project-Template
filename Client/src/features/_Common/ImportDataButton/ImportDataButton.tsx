@@ -1,4 +1,4 @@
-import { onImportData } from "@/features/_Common/ImportDataButton/ImportDataButton.utils";
+import { actions } from "@/Actions/actions.impl";
 import { FileInput } from "@mantine/core";
 import { FileJson } from "lucide-react";
 
@@ -13,7 +13,7 @@ export const ImportDataButton = () => (
 		accept="application/json"
 		placeholder="Click to import data or drag and drop file"
 		rightSection={<FileJson />}
-		onChange={onImportData}
+		onChange={actions.data.import}
 		value={null}
 	/>
 );

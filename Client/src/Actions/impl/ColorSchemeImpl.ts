@@ -1,6 +1,17 @@
 import type { IColorScheme } from "@/Actions/actions.interface";
 import { state } from "@/Actions/actions.state";
+import { ColorSchemeType } from "@/Shared/SharedModel";
 
 export class ColorSchemeImpl implements IColorScheme {
-	toggle = () => (state.colorScheme.value = state.colorScheme.value === "light" ? "dark" : "light");
+	updateFn = (colorScheme: ColorSchemeType, useTransition: boolean) => () => {
+		if (useTransition) {
+			document.startViewTransition(() => (state.colorScheme.current.value = colorScheme));
+		} else {
+			state.colorScheme.isLoading.value = true;
+			setTimeout(() => {
+				state.colorScheme.current.value = colorScheme;
+				state.colorScheme.isLoading.value = false;
+			}, 100);
+		}
+	};
 }

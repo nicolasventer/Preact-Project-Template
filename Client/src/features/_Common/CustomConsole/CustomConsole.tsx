@@ -1,50 +1,17 @@
-import { clearConsole, resizeConsole, toggleConsole, updateLogToSeeCount } from "@/features/_Common/common.setters";
-import type { setConsoleType as _setConsoleType } from "@/features/_Common/CustomConsole/CustomConsole.utils";
-import { gs } from "@/gs";
+import { actions, st } from "@/Actions/actions.impl";
 import { Horizontal, Vertical } from "@/libs/StrongBox/ComponentToolbox";
 import { ActionIcon, Button, Indicator, Paper, Text, ThemeIcon, Tooltip } from "@mantine/core";
 import { signal } from "@preact/signals";
 import { GripHorizontal } from "lucide-react";
-import { type MouseEventHandler, type TouchEventHandler } from "react";
 import { GrClear } from "react-icons/gr";
 
-const isWrap = signal(false);
-
 document.addEventListener("keydown", (ev) => {
-	if (ev.key === "z" && ev.altKey) isWrap.value = !isWrap.value;
+	if (ev.key === "z" && ev.altKey) actions.console.log.wrap.toggle();
 });
 
-const mousePos = signal({ x: 0, y: 0 });
-const startConsoleHeight = signal(0);
-const isConsoleResizing = signal(false);
 const isHandleHovered = signal(false);
-
-const startResize: MouseEventHandler<HTMLElement> & TouchEventHandler<HTMLElement> = (ev) => {
-	ev.stopPropagation();
-	mousePos.value = "clientX" in ev ? { x: ev.clientX, y: ev.clientY } : { x: ev.touches[0].clientX, y: ev.touches[0].clientY };
-	startConsoleHeight.value = gs.consoleHeight.value;
-	isConsoleResizing.value = true;
-	document.body.addEventListener("mousemove", resize);
-	document.body.addEventListener("mouseup", stopResize);
-	document.body.addEventListener("touchmove", resize);
-	document.body.addEventListener("touchend", stopResize);
-};
-
-const resize = (ev: MouseEvent | TouchEvent) => {
-	ev.stopPropagation();
-	if (!isConsoleResizing.value) return;
-	const clientY = ev instanceof MouseEvent ? ev.clientY : ev.touches[0].clientY;
-	const newHeight = startConsoleHeight.value + mousePos.value.y - clientY;
-	resizeConsole(newHeight, startConsoleHeight.value);
-};
-const stopResize = (ev: MouseEvent | TouchEvent) => {
-	ev.stopPropagation();
-	isConsoleResizing.value = false;
-	document.body.removeEventListener("mousemove", resize);
-	document.body.removeEventListener("mouseup", stopResize);
-	document.body.removeEventListener("touchmove", resize);
-	document.body.removeEventListener("touchend", stopResize);
-};
+const enableHandleHovered = () => (isHandleHovered.value = true);
+const disableHandleHovered = () => (isHandleHovered.value = false);
 
 /**
  * The console that displays the execution log and errors, it can be resized and hidden.\
@@ -68,18 +35,18 @@ export const CustomConsole = ({ resizable = true }: { resizable?: boolean }) => 
 		justifyContent="flex-end"
 		style={{ top: 0, zIndex: 200, pointerEvents: "none", margin: "-2px 0" }}
 	>
-		{gs.isConsoleDisplayed.value && (
+		{st.console.isDisplayed.value && (
 			<>
 				{resizable && (
 					<Paper
-						onMouseDown={startResize}
-						onMouseEnter={() => (isHandleHovered.value = true)}
-						onMouseLeave={() => (isHandleHovered.value = false)}
-						onTouchStart={startResize}
+						onMouseDown={actions.console.height.startUpdating}
+						onMouseEnter={enableHandleHovered}
+						onMouseLeave={disableHandleHovered}
+						onTouchStart={actions.console.height.startUpdating}
 						style={{
 							cursor: "ns-resize",
 							backgroundColor:
-								isHandleHovered.value || isConsoleResizing.value ? "var(--mantine-primary-color-filled)" : undefined,
+								isHandleHovered.value || st.console.isResizing.value ? "var(--mantine-primary-color-filled)" : undefined,
 							borderRadius: 0,
 							display: "flex",
 							justifyContent: "center",
@@ -96,10 +63,11 @@ export const CustomConsole = ({ resizable = true }: { resizable?: boolean }) => 
 				)}
 				<Paper
 					withBorder
-					style={{ height: resizable ? gs.consoleHeight.value : "100%", pointerEvents: "auto", overflow: "auto" }}
+					style={{ height: resizable ? st.console.height.value : "100%", pointerEvents: "auto", overflow: "auto" }}
 				>
-					{gs.logList.value.map((log, index) => {
-						const isLogToSee = gs.logList.value.length - index <= gs.logToSeeCount.value;
+					{st.console.log.list.value.map((log, index) => {
+						const isLogToSee = st.console.log.list.value.length - index <= st.console.log.toSeeCount.value;
+						const updateLogToSeeCount = isLogToSee ? actions.console.log.markAsReadFn(index) : () => {};
 						return (
 							<Horizontal
 								// eslint-disable-next-line react/no-array-index-key
@@ -111,7 +79,7 @@ export const CustomConsole = ({ resizable = true }: { resizable?: boolean }) => 
 									cursor: isLogToSee ? "pointer" : undefined,
 								}}
 								alignItems="baseline"
-								onClick={() => isLogToSee && updateLogToSeeCount(index)}
+								onClick={updateLogToSeeCount}
 							>
 								<Text
 									c={log.type === "error" ? "red" : log.type === "warn" ? "yellow" : log.type === "info" ? "blue" : "gray"}
@@ -125,8 +93,8 @@ export const CustomConsole = ({ resizable = true }: { resizable?: boolean }) => 
 										style={{
 											whiteSpace: "pre",
 											fontFamily: "consolas",
-											textWrapMode: isWrap.value ? "wrap" : "nowrap",
-											overflowWrap: isWrap.value ? "anywhere" : undefined,
+											textWrapMode: st.console.log.isWrapped.value ? "wrap" : "nowrap",
+											overflowWrap: st.console.log.isWrapped.value ? "anywhere" : undefined,
 										}}
 									>
 										{log.message}
@@ -140,18 +108,18 @@ export const CustomConsole = ({ resizable = true }: { resizable?: boolean }) => 
 		)}
 		<Horizontal gap={12} style={{ background: "var(--mantine-color-body)" }}>
 			<Indicator
-				label={gs.logToSeeCount.value}
-				disabled={gs.logToSeeCount.value === 0}
+				label={st.console.log.toSeeCount.value}
+				disabled={st.console.log.toSeeCount.value === 0}
 				color={"red"}
 				position="top-end"
 				size={25}
 				flex={1}
 			>
-				<Button onClick={toggleConsole} size="compact-xs" style={{ pointerEvents: "auto" }} fullWidth>
+				<Button onClick={actions.console.display.toggle} size="compact-xs" style={{ pointerEvents: "auto" }} fullWidth>
 					Console
 				</Button>
 			</Indicator>
-			<ActionIcon size={24} style={{ margin: "-6px 0", scale: 0.8, pointerEvents: "auto" }} onClick={clearConsole}>
+			<ActionIcon size={24} style={{ margin: "-6px 0", scale: 0.8, pointerEvents: "auto" }} onClick={actions.console.log.clear}>
 				<GrClear />
 			</ActionIcon>
 		</Horizontal>
