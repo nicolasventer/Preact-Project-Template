@@ -10,10 +10,6 @@ const toggleUseTransition = () => (useTransition.value = !useTransition.value);
 
 effect(() => console.info("useTransition:", useTransition.value));
 
-/**
- * Home page
- * @returns the home page
- */
 export const HomePage = () => (
 	<>
 		<div>{tr.v.Home}</div>

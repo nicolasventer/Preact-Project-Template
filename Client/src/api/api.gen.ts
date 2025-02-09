@@ -4,10 +4,6 @@ import type { Treaty } from "@elysiajs/eden";
 type GoodTreatyResponse<T extends Record<number, unknown>> = Treaty.TreatyResponse<T>;
 type TreatyResponse<T extends Record<number, unknown>> = { [K in keyof T]: GoodTreatyResponse<{ [_ in K]: T[K] }> }[keyof T];
 
-/**
- * @ignore
- * Type definition for the API object, retrieved from the server
- */
 export type Api = {
 	status: {
 		get: (

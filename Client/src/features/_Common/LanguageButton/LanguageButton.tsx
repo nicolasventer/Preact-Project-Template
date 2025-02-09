@@ -9,12 +9,6 @@ const LanguageDisplay: Record<LanguageType, string> = {
 	fr: "Français",
 };
 
-/**
- * A button that changes the language of the application
- * @param params
- * @param params.useTransition If the language change should use a transition
- * @returns The language button
- */
 export const LanguageButton = ({ useTransition }: { useTransition: boolean }) => (
 	<Popover position="bottom-end" withArrow>
 		<Popover.Target>
@@ -38,12 +32,6 @@ export const LanguageButton = ({ useTransition }: { useTransition: boolean }) =>
 	</Popover>
 );
 
-/**
- * A button that changes the language of the application
- * @param params
- * @param params.useTransition If the language change should use a transition
- * @returns The language button
- */
 export const LanguageButton2 = ({ useTransition }: { useTransition: boolean }) => (
 	<Select
 		label="Language"

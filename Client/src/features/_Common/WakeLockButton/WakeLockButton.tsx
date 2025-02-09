@@ -3,10 +3,6 @@ import { widthSizeObj } from "@/libs/StrongBox/clientUtils";
 import { ActionIcon } from "@mantine/core";
 import { Lock, LockOpen } from "lucide-react";
 
-/**
- * The wake lock button
- * @returns the button to toggle the wake lock
- */
 export const WakeLockButton = () => (
 	<>
 		{computedSt.isWakeLockAvailable && (

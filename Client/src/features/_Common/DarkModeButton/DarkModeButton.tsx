@@ -3,12 +3,6 @@ import { widthSizeObj } from "@/libs/StrongBox/clientUtils";
 import { ActionIcon } from "@mantine/core";
 import { Moon, Sun } from "lucide-react";
 
-/**
- * A button that toggles between light and dark mode
- * @param params
- * @param params.useTransition If the color scheme should change using a transition
- * @returns a button that toggles between light and dark mode
- */
 export const DarkModeButton = ({ useTransition }: { useTransition: boolean }) => (
 	<ActionIcon loading={st.colorScheme.isLoading.value}>
 		{st.colorScheme.current.value === "dark" && (

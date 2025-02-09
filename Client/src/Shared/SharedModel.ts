@@ -1,11 +1,6 @@
 import { t, type TSchema } from "elysia";
 import { checkEnumObj } from "./SharedUtils";
 
-/**
- * Nullable type
- * @param type Type to make nullable
- * @returns Union of type and null
- */
 export const Nullable = <T extends TSchema>(type: T) => t.Union([type, t.Null()]);
 
 /** Color scheme values */
@@ -40,13 +35,10 @@ export const LANGUAGES_OBJ = {
 export type LanguageType = (typeof LANGUAGES)[number];
 checkEnumObj<LanguageType>(LANGUAGES_OBJ);
 
-/** Dynamic translation dictionary schema */
 export const GetDynDictSchema = t.Object({
-	/** Translation category */
 	language: t.Union(LANGUAGES.map((l) => t.Literal(l))),
 });
 
-/** Get dynamic dictionary type */
 export type GetDynDict = typeof GetDynDictSchema.static;
 
 /** Translation categories */
@@ -63,7 +55,6 @@ export const TRANSLATION_CATEGORIES_OBJ = {
 export type TranslationCategoryType = (typeof TRANSLATION_CATEGORIES)[number];
 checkEnumObj<TranslationCategoryType>(TRANSLATION_CATEGORIES_OBJ);
 
-/** Dynamic translation dictionary */
 export type DynDict<T extends string> = Record<LanguageType, Record<TranslationCategoryType, Record<T, string>>>;
 
 /** Permission values */
@@ -88,30 +79,20 @@ export const PERMISSIONS_OBJ = {
 export type PermissionType = (typeof PERMISSIONS)[number];
 checkEnumObj<PermissionType>(PERMISSIONS_OBJ);
 
-/** User schema */
 export const ExampleUserSchema = t.Object({
-	/** User name */
 	name: t.String({ minLength: 1, maxLength: 100 }),
-	/** User email */
 	email: t.String({ format: "email" }),
-	/** User permissions */
 	permissions: t.Array(t.Union(PERMISSIONS.map((permission) => t.Literal(permission)))),
 });
 
-/** User type */
 export type ExampleUser = typeof ExampleUserSchema.static;
 
-/** Find user schema */
 export const FindUserSchema = t.Optional(
 	t.Object({
-		/** User name */
 		name: t.Optional(t.String({ minLength: 1, maxLength: 100 })),
-		/** User email */
 		email: t.Optional(t.String({ format: "email" })),
-		/** User permissions */
 		permissions: t.Optional(t.Array(t.Union(PERMISSIONS.map((permission) => t.Literal(permission))))),
 	})
 );
 
-/** Find user type */
 export type FindUser = typeof FindUserSchema.static;

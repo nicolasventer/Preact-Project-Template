@@ -4,22 +4,15 @@ import type { ColorSchemeType, DynDict, LanguageType, TranslationCategoryType } 
 import type { Tr } from "@/tr/en";
 import { computed, effect, signal, Signal } from "@preact/signals";
 
-/** the key of the local storage */
 export const LOCAL_STORAGE_KEY = "template_globalState" as const;
 
-/** The type of the global state of the application. */
 export type GlobalState = {
-	/** the color scheme of the application */
 	colorScheme: Signal<ColorSchemeType>;
-	/** the language of the application */
 	language: Signal<LanguageType>;
-	/** if the console is displayed */
+	isLanguageLoading: Signal<boolean>;
 	isConsoleDisplayed: Signal<boolean>;
-	/** the height of the console */
 	consoleHeight: Signal<number>;
-	/** @ignore */
 	tr: Signal<Tr>;
-	/** the dynamic translation object */
 	trDynDict: Signal<DynDict<string>>;
 };
 
@@ -44,6 +37,7 @@ export const loadGlobalState = (): GlobalState => {
 	return {
 		colorScheme: signal(storedGlobalState.colorScheme ?? "dark"),
 		language: signal(storedGlobalState.language ?? "en"),
+		isLanguageLoading: signal(false),
 		isConsoleDisplayed: signal(storedGlobalState.isConsoleDisplayed ?? false),
 		consoleHeight: signal(storedGlobalState.consoleHeight ?? 300),
 		tr: signal({} as Tr), // temporary value
@@ -51,13 +45,10 @@ export const loadGlobalState = (): GlobalState => {
 	};
 };
 
-/** The global state of the application. */
 export const globalState: GlobalState = loadGlobalState();
 
-/** The readonly global state of the application. */
 export const gs = globalState as RecursiveReadOnlySignal<GlobalState>;
 
-/** @ignore */
 export const tr = {
 	get v() {
 		return gs.tr.value;
@@ -79,13 +70,10 @@ export const trFn = (word: keyof Tr) => gs.tr.value[word] ?? word;
 export const trDynFn = (category: TranslationCategoryType) => (word: string) =>
 	gs.trDynDict.value[gs.language.value]?.[category]?.[word] ?? word;
 
-/** If the language is loading. */
-export const isLanguageLoading = signal(false);
-
 /** Load the translation file based on the language. */
 effect(
 	() => (
-		(isLanguageLoading.value = true),
+		(globalState.isLanguageLoading.value = true),
 		void Promise.all([
 			import(`./tr/${gs.language.value}.js`),
 			api["dyn-dict"]({ language: gs.language.value })
@@ -94,7 +82,7 @@ effect(
 		]).then(([{ default: tr }, dynDict]) => {
 			globalState.tr.value = tr;
 			globalState.trDynDict.value = { ...globalState.trDynDict.value, [gs.language.value]: dynDict.data };
-			isLanguageLoading.value = false;
+			globalState.isLanguageLoading.value = false;
 		})
 	)
 );

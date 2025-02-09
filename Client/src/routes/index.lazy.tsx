@@ -11,11 +11,6 @@ const theme = createTheme({});
 
 actions.console.type.update("both");
 
-/**
- * Renders the {@link RouterRender | `router`}. \
- * It also updates the {@link globalState | `global states`} `isAboveMd` and `isBelowXxs` based on the screen size.
- * @returns The rendered application.
- */
 // @routeExport
 export const MainLayout = () => {
 	const { height, width } = useViewportSize();

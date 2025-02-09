@@ -7,10 +7,6 @@ import { ExampleUserSchema, FindUserSchema, GetDynDictSchema } from "./Shared/Sh
 import { getDynDict } from "./dynDict";
 import { createUser, deleteUser, findUsers, getUser, updateUser } from "./exampleUser";
 
-/**
- * @ignore See documentation in the swagger description.
- * The Elysia server.
- */
 export const app = new Elysia()
 	.use(cors())
 	.use(swagger())
@@ -33,16 +29,8 @@ export const app = new Elysia()
 	.delete("/api/user/:email", (req) => deleteUser(req, req.params))
 	.listen(PORT);
 
-/**
- * @ignore
- * The type of the app (used in api.ts).
- */
 export type App = typeof app;
 
-/**
- * @ignore
- * The type of the API (copy-pasted from the client).
- */
 export type Api = ReturnType<typeof treaty<App>>["api"];
 
 console.log(`Server started on ${SRV_URL}`);

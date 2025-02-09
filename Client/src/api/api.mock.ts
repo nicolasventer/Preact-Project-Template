@@ -2,7 +2,6 @@ import type { Api } from "@/api/api.gen";
 import type { DynDict, ExampleUser } from "@/Shared/SharedModel";
 import type { Treaty } from "@elysiajs/eden";
 
-/** @ignore */
 type TreatyResponse<T extends Record<number, unknown>> = Treaty.TreatyResponse<T>;
 
 const getDefault = <T>(obj: { default: T }) => obj.default;
@@ -33,10 +32,6 @@ const mockDynDict: DynDict<string> = {
 	fr: { test: { dynamic_english: "francais_dynamique fictif" } },
 } satisfies DynDict<"dynamic_english">;
 
-/**
- * @ignore
- * Mock implementation of the API
- */
 export const apiMock: Api = {
 	status: { get: () => Promise.resolve(mockResponse("Server is mocked")) },
 	"dyn-dict": ({ language }) => ({

@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 /**
  * Not found page.
  *
- * Redirects to the home page after 3 seconds.
+ * Redirects to the home page after 3 seconds. The redirection can be cancelled.
  * @returns the not found page.
  */
 export const NotFoundPage = () => {

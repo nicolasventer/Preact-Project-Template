@@ -182,7 +182,7 @@ export class SignalArray<T> {
 	/** Set the value of the signal. */
 	set value(value: T[]) {
 		this.array = value;
-		this.s.value = !this.s.value;
+		this.s.value = !this.s.peek();
 	}
 
 	/** Get the value of the signal without registering the trigger. */
@@ -191,19 +191,19 @@ export class SignalArray<T> {
 	/** Push a value to the array. */
 	push = (value: T) => {
 		this.array.push(value);
-		this.s.value = !this.s.value;
+		this.s.value = !this.s.peek();
 	};
 
 	/** Pop a value from the array. */
 	pop = () => {
 		this.array.pop();
-		this.s.value = !this.s.value;
+		this.s.value = !this.s.peek();
 	};
 
 	/** Splice the array. */
 	splice = (start: number, deleteCount: number, ...items: T[]) => {
 		this.array.splice(start, deleteCount, ...items);
-		this.s.value = !this.s.value;
+		this.s.value = !this.s.peek();
 	};
 }
 

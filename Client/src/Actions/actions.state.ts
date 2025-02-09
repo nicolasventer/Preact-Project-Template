@@ -10,7 +10,7 @@ export const state = {
 	},
 	language: {
 		current: globalState.language,
-		isLoading: signal(false),
+		isLoading: globalState.isLanguageLoading,
 	},
 	console: {
 		isDisplayed: globalState.isConsoleDisplayed,

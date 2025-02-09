@@ -1,7 +1,6 @@
 import type { IConsole } from "@/Actions/actions.interface";
 import { computedState, state } from "@/Actions/actions.state";
 import type { ConsoleType, LogType } from "@/Actions/actions.types";
-import { untracked } from "@preact/signals";
 import type { MouseEventHandler, TouchEventHandler } from "react";
 
 export class ConsoleImpl implements IConsole {
@@ -25,15 +24,14 @@ export class ConsoleImpl implements IConsole {
 					.join(" ")
 			);
 
-	private log_add = (type: LogType, message: string) =>
-		untracked(() => {
-			state.console.log.list.push({
-				type,
-				message,
-				time: new Date().toISOString().split("T")[1],
-			});
-			state.console.log.toSeeCount.value = state.console.log.toSeeCount.peek() + 1;
+	private log_add = (type: LogType, message: string) => {
+		state.console.log.list.push({
+			type,
+			message,
+			time: new Date().toISOString().split("T")[1],
 		});
+		state.console.log.toSeeCount.value = state.console.log.toSeeCount.peek() + 1;
+	};
 
 	private height_updating = (ev: MouseEvent | TouchEvent) => {
 		ev.stopPropagation();

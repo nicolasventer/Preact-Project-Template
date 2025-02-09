@@ -15,7 +15,7 @@ const disableHandleHovered = () => (isHandleHovered.value = false);
 
 /**
  * The console that displays the execution log and errors, it can be resized and hidden.\
- * Be sure to call {@link _setConsoleType | setConsoleType("custom")} or {@link _setConsoleType | setConsoleType("both")} to use this console.\
+ * Be sure to call {@link actions.console.type.update | actions.console.type.update("custom")} or {@link actions.console.type.update | actions.console.type.update("both")} to use this console.\
  * Put the component in a parent with `relative position` to limit the size.
  * @example
  * ```tsx
