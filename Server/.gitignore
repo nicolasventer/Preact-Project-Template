@@ -176,5 +176,6 @@ dist
 
 docs/
 src/Shared/
-bun.lockb
 bun.lock
+bun.lockb
+graph-dependencies.html

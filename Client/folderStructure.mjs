@@ -4,12 +4,9 @@ import { createFolderStructure } from "eslint-plugin-project-structure";
 
 export const folderStructureConfig = createFolderStructure({
 	structure: [
-		// Allow any files in the root of your project, like package.json, eslint.config.mjs, etc.
-		// You can add rules for them separately.
-		// You can also add exceptions like this: "(?!folderStructure)*".
+		// Allow any files in the root of your project
 		{ name: "*" },
-
-		// Allow any folders in the root of your project.
+		// Allow any folders in the root of your project
 		{ name: "*", children: [] },
 
 		// src/
@@ -46,7 +43,6 @@ export const folderStructureConfig = createFolderStructure({
 				{ ruleId: "routes-folder" },
 				// src/tr/
 				{ name: "tr", children: [{ name: "{snake_case}.(ts|js)" }] },
-
 				// src/Actions/
 				{
 					name: "Actions",
@@ -56,10 +52,8 @@ export const folderStructureConfig = createFolderStructure({
 						{ ruleId: "actions-subfolder" },
 					],
 				},
-
 				// src/features/
 				{ name: "features", children: [{ ruleId: "features-subfolder" }] },
-
 				// src/Shared/
 				{ name: "Shared", children: [] },
 			],

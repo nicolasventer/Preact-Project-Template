@@ -3,30 +3,14 @@ import type { treaty } from "@elysiajs/eden";
 import swagger from "@elysiajs/swagger";
 import Elysia from "elysia";
 import { PORT, SRV_URL } from "./Shared/SharedConfig";
-import { ExampleUserSchema, FindUserSchema, GetDynDictSchema } from "./Shared/SharedModel";
-import { getDynDict } from "./dynDict";
-import { createUser, deleteUser, findUsers, getUser, updateUser } from "./exampleUser";
+import { apiApp } from "./routes/Api/api.routes";
 
 export const app = new Elysia()
 	.use(cors())
 	.use(swagger())
 	.get("/", () => "Server is running")
-	// get status
-	.get("/api/status", () => "Status ok")
-	// get dynamic dictionary
-	.get("/api/dyn-dict/:language", (req) => getDynDict(req, req.params), { params: GetDynDictSchema })
-	// get all users
-	.get("/api/users", (req) => findUsers(req))
-	// get a user by email
-	.get("/api/user/:email", (req) => getUser(req, req.params))
-	// get users by query
-	.post("/api/users/find", (req) => findUsers(req, req.body), { body: FindUserSchema })
-	// create a user
-	.post("/api/user", (req) => createUser(req, req.body), { body: ExampleUserSchema })
-	// update a user
-	.put("/api/user", (req) => updateUser(req, req.body, req.body), { body: ExampleUserSchema })
-	// delete a user by email
-	.delete("/api/user/:email", (req) => deleteUser(req, req.params))
+	// use apiApp
+	.use(apiApp)
 	.listen(PORT);
 
 export type App = typeof app;
