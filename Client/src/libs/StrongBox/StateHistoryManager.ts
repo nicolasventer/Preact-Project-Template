@@ -15,7 +15,7 @@ export class StateHistoryManager<T> {
 	 * @param getState return the current state.
 	 * @param setState update the state.
 	 */
-	constructor(private getState: () => T, private setState: (state: T) => void) {}
+	constructor(private p: { getState: () => T; setState: (state: T) => void }) {}
 
 	/** Signal that indicates whether the state can be undone. */
 	public canUndo = this.canUndo_ as ReadonlySignal<boolean>;
@@ -25,7 +25,7 @@ export class StateHistoryManager<T> {
 	/** get the current state and push it to the history. */
 	public pushHistory = () => {
 		if (this.historyIndex !== -1) this.stateList.length = this.historyIndex + 1;
-		this.stateList.push(this.getState());
+		this.stateList.push(this.p.getState());
 		this.historyIndex = -1;
 		this.canUndo_.value = true;
 		this.canRedo_.value = false;
@@ -52,7 +52,7 @@ export class StateHistoryManager<T> {
 		this.historyIndex--;
 		this.canRedo_.value = true;
 		this.canUndo_.value = this.historyIndex !== 0;
-		this.setState(this.stateList[this.historyIndex]);
+		this.p.setState(this.stateList[this.historyIndex]);
 		return true;
 	};
 
@@ -65,7 +65,7 @@ export class StateHistoryManager<T> {
 		this.historyIndex++;
 		this.canUndo_.value = true;
 		this.canRedo_.value = this.historyIndex !== this.stateList.length - 1;
-		this.setState(this.stateList[this.historyIndex]);
+		this.p.setState(this.stateList[this.historyIndex]);
 		return true;
 	};
 }

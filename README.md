@@ -32,6 +32,7 @@ The `Light versions` remove the dependencies with `typebox`, `mantine`, `react-h
 - [x] Documentation (server and client) _(WIP: change of doc tool)_
 - [x] Dependency graph (client)
 - [x] Linting (server and client)
+- [x] API type safety (server and client)
 
 ## Installation
 

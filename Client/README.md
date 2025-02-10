@@ -7,7 +7,6 @@ This is the client side of the application.
 ## Requirements
 
 - [bun](https://bun.sh/)
-- [typedoc](https://typedoc.org/)
 - [serve](https://www.npmjs.com/package/serve)
 - [playwright](https://playwright.dev/) + ([VsCode extension](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright))
 
