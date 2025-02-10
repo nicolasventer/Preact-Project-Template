@@ -1,5 +1,5 @@
-import { testConfig } from "./testConfig";
+import { testConfig } from "@/testConfig";
 
 testConfig.enable = true;
 
-export { app } from "./index";
+export { app } from "@/index";

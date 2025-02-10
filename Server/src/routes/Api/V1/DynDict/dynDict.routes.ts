@@ -1,6 +1,6 @@
+import { DynDictImpl } from "@/routes/Api/V1/DynDict/dynDict.impl";
+import { GetDynDictSchema } from "@/Shared/SharedModel";
 import { Elysia } from "elysia";
-import { GetDynDictSchema } from "../../../../Shared/SharedModel";
-import { DynDictImpl } from "./dynDict.impl";
 
 const dynDictImpl = new DynDictImpl();
 

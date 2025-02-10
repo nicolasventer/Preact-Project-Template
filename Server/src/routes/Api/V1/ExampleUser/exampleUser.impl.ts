@@ -1,5 +1,5 @@
+import type { ExampleUser, FindUser } from "@/Shared/SharedModel";
 import type { Context } from "elysia";
-import type { ExampleUser, FindUser } from "../../../../Shared/SharedModel";
 
 export class UserImpl {
 	private users: ExampleUser[] = [

@@ -1,5 +1,5 @@
+import type { DynDict, GetDynDict } from "@/Shared/SharedModel";
 import type { Context } from "elysia";
-import type { DynDict, GetDynDict } from "../../../../Shared/SharedModel";
 
 const dynDict: DynDict<string> = {
 	en: { test: { dynamic_english: "dynamic_english" } },

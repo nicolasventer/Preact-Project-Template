@@ -1,7 +1,7 @@
 import { api } from "@/api/api";
 
 export const isServerRunning = () =>
-	api.status
+	api
 		.get()
 		.then(() => true)
 		.catch(() => false);

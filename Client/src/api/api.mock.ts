@@ -33,57 +33,58 @@ const mockDynDict: DynDict<string> = {
 } satisfies DynDict<"dynamic_english">;
 
 export const apiMock: Api = {
-	status: { get: () => Promise.resolve(mockResponse("Server is mocked")) },
-	"dyn-dict": ({ language }) => ({
-		get: () => Promise.resolve(mockResponse(mockDynDict[language])),
-	}),
-	user: Object.assign(
-		({ email }: { email: string | number }) => ({
-			get: () =>
-				users().then((data) => {
-					const user = data.find((u) => u.email === email);
-					if (!user) return mockNotFound("User not found");
-					return mockResponse(user);
-				}),
-			delete: () =>
-				users().then((data) => {
-					const userIndex = data.findIndex((u) => u.email === email);
-					if (userIndex === -1) return mockNotFound("User not found");
-					data.splice(userIndex, 1);
-					return mockResponse("User deleted");
-				}),
+	get: () => Promise.resolve(mockResponse("Server is mocked")),
+	v1: {
+		get: () => Promise.resolve(mockResponse("API v1 is mocked")),
+		"dyn-dict": ({ language }) => ({
+			get: () => Promise.resolve(mockResponse(mockDynDict[language])),
 		}),
-		as_<Pick<Api["user"], "post" | "put">>({
-			post: (body) =>
-				users().then((data) => {
-					const user = data.find((u) => u.email === body.email);
-					if (user) return mockNotFound("User already exists");
-					data.push(body);
-					return mockResponse(body);
-				}),
-			put: (body) =>
-				users().then((data) => {
-					const userIndex = data.findIndex((u) => u.email === body.email);
-					if (userIndex === -1) return mockNotFound("User not found");
-					data[userIndex] = body;
-					return mockResponse(body);
-				}),
-		})
-	),
-	users: {
-		get: () => users().then((data) => mockResponse(data)),
-		find: {
-			post: (body) =>
-				users().then((data) => {
-					if (!body) return mockResponse(data);
-					const filtered = data.filter((u) => {
-						if (body.name && u.name !== body.name) return false;
-						if (body.email && u.email !== body.email) return false;
-						if (body.permissions && !body.permissions.every((p) => u.permissions.includes(p))) return false;
-						return true;
-					});
-					return mockResponse(filtered);
-				}),
-		},
+		users: Object.assign(
+			({ email }: { email: string | number }) => ({
+				get: () =>
+					users().then((data) => {
+						const user = data.find((u) => u.email === email);
+						if (!user) return mockNotFound("User not found");
+						return mockResponse(user);
+					}),
+				delete: () =>
+					users().then((data) => {
+						const userIndex = data.findIndex((u) => u.email === email);
+						if (userIndex === -1) return mockNotFound("User not found");
+						data.splice(userIndex, 1);
+						return mockResponse("User deleted");
+					}),
+			}),
+			as_<Pick<Api["v1"]["users"], "get" | "find" | "post" | "put">>({
+				get: () => users().then((data) => mockResponse(data)),
+				find: {
+					post: (body) =>
+						users().then((data) => {
+							if (!body) return mockResponse(data);
+							const filtered = data.filter((u) => {
+								if (body.name && u.name !== body.name) return false;
+								if (body.email && u.email !== body.email) return false;
+								if (body.permissions && !body.permissions.every((p) => u.permissions.includes(p))) return false;
+								return true;
+							});
+							return mockResponse(filtered);
+						}),
+				},
+				post: (body) =>
+					users().then((data) => {
+						const user = data.find((u) => u.email === body.email);
+						if (user) return mockNotFound("User already exists");
+						data.push(body);
+						return mockResponse(body);
+					}),
+				put: (body) =>
+					users().then((data) => {
+						const userIndex = data.findIndex((u) => u.email === body.email);
+						if (userIndex === -1) return mockNotFound("User not found");
+						data[userIndex] = body;
+						return mockResponse(body);
+					}),
+			})
+		),
 	},
 };

@@ -76,7 +76,7 @@ effect(
 		(globalState.isLanguageLoading.value = true),
 		void Promise.all([
 			import(`./tr/${gs.language.value}.js`),
-			api["dyn-dict"]({ language: gs.language.value })
+			api.v1["dyn-dict"]({ language: gs.language.value })
 				.get()
 				.catch(() => ({ data: defaultDynDict.en })),
 		]).then(([{ default: tr }, dynDict]) => {
