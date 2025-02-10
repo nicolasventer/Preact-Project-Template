@@ -26,7 +26,7 @@ export const independentModulesConfig = createIndependentModules({
 		{
 			name: "Routes",
 			pattern: "src/routes/**",
-			allowImportsFrom: ["src/Shared/**", "{dirname}/**"],
+			allowImportsFrom: ["src/Shared/**", "{misc}", "{dirname}/**"],
 			errorMessage: "🔥 The Routes module should only access Shared modules and Route folder and subfolders. 🔥",
 		},
 
@@ -46,7 +46,7 @@ export const independentModulesConfig = createIndependentModules({
 		},
 	],
 	reusableImportPatterns: {
-		misc: ["src/assets/**", "src/data/**", "src/fonts/**"],
+		misc: ["src/assets/**"],
 		root: ["src/*"],
 		toOrganize: ["src/toOrganize/**"],
 	},

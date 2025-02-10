@@ -31,10 +31,6 @@ export const folderStructureConfig = createFolderStructure({
 				{ name: "api", children: [{ name: "api.ts" }, { name: "api.(config|gen|mock).ts" }] },
 				// src/assets/
 				{ ruleId: "assets-folder" },
-				// src/data/
-				{ ruleId: "data-folder" },
-				// src/fonts/
-				{ name: "fonts", children: [{ name: "font.css" }], ruleId: "fonts-subfolder" },
 				// src/hooks/
 				{ name: "hooks", children: [{ name: "use{PascalCase}.(ts|tsx)" }] },
 				// src/libs/
@@ -82,7 +78,26 @@ export const folderStructureConfig = createFolderStructure({
 		},
 		"assets-folder": {
 			name: "assets",
-			children: [{ name: "*.(png|jpg|jpeg|gif|svg)" }, { name: "*", ruleId: "assets-folder" }],
+			children: [
+				{ ruleId: "images-folder" },
+				{ ruleId: "videos-folder" },
+				{ ruleId: "audios-folder" },
+				{ ruleId: "data-folder" },
+				{ name: "fonts", children: [{ name: "font.css" }], ruleId: "fonts-subfolder" },
+				{ name: "*", ruleId: "assets-folder" },
+			],
+		},
+		"images-folder": {
+			name: "images",
+			children: [{ name: "*.(png|jpg|jpeg|gif|svg|ico)" }, { name: "*", ruleId: "images-folder" }],
+		},
+		"videos-folder": {
+			name: "videos",
+			children: [{ name: "*.(mp4|webm|ogg|mkv)" }, { name: "*", ruleId: "videos-folder" }],
+		},
+		"audios-folder": {
+			name: "audios",
+			children: [{ name: "*.(mp3|wav|ogg)" }, { name: "*", ruleId: "audios-folder" }],
 		},
 		"data-folder": {
 			name: "data",

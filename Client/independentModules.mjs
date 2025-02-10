@@ -92,7 +92,7 @@ export const independentModulesConfig = createIndependentModules({
 		},
 	],
 	reusableImportPatterns: {
-		misc: ["src/assets/**", "src/data/**", "src/fonts/**"],
+		misc: ["src/assets/**"],
 		root: ["src/*", "src/api/*", "src/hooks/**", "src/libs/**", "src/tr/*", "*"],
 		readOnlyGlobalState: [
 			"src/gs.ts",

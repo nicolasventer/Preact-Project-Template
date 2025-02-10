@@ -6,7 +6,7 @@ type TreatyResponse<T extends Record<number, unknown>> = Treaty.TreatyResponse<T
 
 const getDefault = <T>(obj: { default: T }) => obj.default;
 
-const users_ = () => import("@/data/Users.json").then(getDefault) as Promise<ExampleUser[]>;
+const users_ = () => import("@/assets/data/Users.json").then(getDefault) as Promise<ExampleUser[]>;
 let usersCache: ExampleUser[] = []; // only for simulation of update and delete, (generally users_ is called)
 const users = () => (usersCache.length ? Promise.resolve(usersCache) : users_().then((data) => (usersCache = data)));
 
