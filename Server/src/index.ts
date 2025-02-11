@@ -8,7 +8,7 @@ import Elysia from "elysia";
 export const app = new Elysia()
 	.use(cors())
 	.use(swagger())
-	.get("", () => "Server is running")
+	.get("/", () => "Server is running")
 	// use apiApp
 	.use(apiApp)
 	.listen(PORT);

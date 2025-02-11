@@ -26,7 +26,7 @@ The `Light versions` remove the dependencies with `typebox`, `mantine`, `react-h
 
 - [x] File base routing (client) (using [Easy-React-Router](https://github.com/nicolasventer/Easy-React-Router))
 - [x] Lazy loading (client) (using [Easy-React-Router](https://github.com/nicolasventer/Easy-React-Router))
-- [x] Structured code (client) (see [Client project structure](Client/README.md#project-structure))
+- [x] Structured code (server and client)
 - [x] Tests (server and client)
 - [x] Code coverage (server and client)
 - [x] Documentation (server and client) _(WIP: change of doc tool)_
