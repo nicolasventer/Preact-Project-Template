@@ -36,8 +36,15 @@ export const independentModulesConfig = createIndependentModules({
 		{
 			name: "Actions",
 			pattern: "src/actions/**",
-			allowImportsFrom: ["src/actions/**", "{readWriteGlobalState}"],
-			errorMessage: "🔥 The Actions module should access to Actions module and readWriteGlobalState imports. 🔥",
+			allowImportsFrom: ["src/actions/**", "{readWriteGlobalState}", "src/api/api.ts"],
+			errorMessage: "🔥 The Actions module should access to Actions module, readWriteGlobalState imports and api.ts. 🔥",
+		},
+
+		{
+			name: "Components Imports",
+			pattern: "src/components/**/*.imports.ts",
+			allowImportsFrom: ["src/components/**"],
+			errorMessage: "🔥 The Components Imports module should access to all components. 🔥",
 		},
 
 		{
