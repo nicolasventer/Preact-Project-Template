@@ -1,6 +1,6 @@
-import { DarkModeButton } from "@/features/_Common/DarkModeButton/DarkModeButton";
-import { LanguageButton } from "@/features/_Common/LanguageButton/LanguageButton";
-import { WakeLockButton } from "@/features/_Common/WakeLockButton/WakeLockButton";
+import { DarkModeButton } from "@/components/_app/DarkModeButton";
+import { LanguageButton } from "@/components/_app/LanguageButton";
+import { WakeLockButton } from "@/components/_app/WakeLockButton";
 import { tr, trDynFn } from "@/gs";
 import { Button } from "@mantine/core";
 import { effect, signal } from "@preact/signals";

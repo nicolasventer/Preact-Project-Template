@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-wrapper-object-types */
+// eslint-disable-next-line project-structure/independent-modules
 import { tr } from "@/gs";
 import type { ChangeEvent } from "react";
 import toast from "react-hot-toast";

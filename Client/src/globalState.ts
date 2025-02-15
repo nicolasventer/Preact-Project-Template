@@ -1,7 +1,7 @@
 import { api } from "@/api/api";
-import type { RecursiveReadOnlySignal, SignalToValue } from "@/libs/StrongBox/signalUtils";
 import type { ColorSchemeType, DynDict, LanguageType, TranslationCategoryType } from "@/Shared/SharedModel";
 import type { Tr } from "@/tr/en";
+import type { RecursiveReadOnlySignal, SignalToValue } from "@/utils/signalUtils";
 import { computed, effect, signal, Signal } from "@preact/signals";
 
 export const LOCAL_STORAGE_KEY = "template_globalState" as const;

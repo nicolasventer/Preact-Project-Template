@@ -1,8 +1,8 @@
 import { wait } from "@/Shared/SharedUtils";
 import { tr } from "@/gs";
-import { useMount } from "@/hooks/useMount";
-import { Horizontal, Vertical } from "@/libs/StrongBox/ComponentToolbox";
 import { navigateToRouteFn } from "@/routerInstance.gen";
+import { Horizontal, Vertical } from "@/utils/ComponentToolbox";
+import { useMount } from "@/utils/useMount";
 import { Button, Text, Title } from "@mantine/core";
 import { useSignal } from "@preact/signals";
 import toast from "react-hot-toast";

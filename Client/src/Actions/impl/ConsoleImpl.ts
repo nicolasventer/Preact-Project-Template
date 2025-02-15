@@ -1,6 +1,6 @@
-import type { IConsole } from "@/Actions/actions.interface";
-import { computedState, state } from "@/Actions/actions.state";
-import type { ConsoleType, LogType } from "@/Actions/actions.types";
+import type { IConsole } from "@/actions/actions.interface";
+import { computedState, state } from "@/actions/actions.state";
+import type { ConsoleType, LogType } from "@/actions/actions.types";
 import type { MouseEventHandler, TouchEventHandler } from "react";
 
 export class ConsoleImpl implements IConsole {

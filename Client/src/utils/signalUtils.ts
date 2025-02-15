@@ -1,4 +1,4 @@
-import { objDiffStr } from "@/libs/StrongBox/clientUtils";
+import { objDiffStr } from "@/utils/clientUtils";
 import { effect, type ReadonlySignal, signal, Signal } from "@preact/signals";
 
 /**

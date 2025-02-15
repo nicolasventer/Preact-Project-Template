@@ -1,5 +1,5 @@
-import { actions, st } from "@/Actions/actions.impl";
-import { responsiveSize } from "@/libs/StrongBox/clientUtils";
+import { actions, st } from "@/actions/actions.impl";
+import { responsiveSize } from "@/utils/clientUtils";
 import { ActionIcon } from "@mantine/core";
 import { Moon, Sun } from "lucide-react";
 

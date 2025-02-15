@@ -1,4 +1,4 @@
-import { actions } from "@/Actions/actions.impl";
+import { actions } from "@/actions/actions.impl";
 import { ActionIcon } from "@mantine/core";
 import { Save } from "lucide-react";
 

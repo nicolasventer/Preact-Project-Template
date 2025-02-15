@@ -1,5 +1,5 @@
-import { IWakeLock } from "@/Actions/actions.interface";
-import { state } from "@/Actions/actions.state";
+import { IWakeLock } from "@/actions/actions.interface";
+import { state } from "@/actions/actions.state";
 import { effect, signal } from "@preact/signals";
 import toast from "react-hot-toast";
 

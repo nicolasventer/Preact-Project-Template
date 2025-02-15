@@ -1,6 +1,6 @@
-import type { Log, ViewportSize } from "@/Actions/actions.types";
+import type { Log, ViewportSize } from "@/actions/actions.types";
 import { globalState } from "@/globalState";
-import { signalArray } from "@/libs/StrongBox/signalUtils";
+import { signalArray } from "@/utils/signalUtils";
 import { computed, signal } from "@preact/signals";
 
 export const state = {

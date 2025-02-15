@@ -1,6 +1,6 @@
-import { actions, st } from "@/Actions/actions.impl";
-import { Vertical } from "@/libs/StrongBox/ComponentToolbox";
+import { actions, st } from "@/actions/actions.impl";
 import { LANGUAGES, type LanguageType } from "@/Shared/SharedModel";
+import { Vertical } from "@/utils/ComponentToolbox";
 import { ActionIcon, Button, Popover, Select } from "@mantine/core";
 import { Languages } from "lucide-react";
 

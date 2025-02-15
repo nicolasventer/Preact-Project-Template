@@ -1,7 +1,7 @@
-import { actions, st } from "@/Actions/actions.impl";
-import { CustomConsole } from "@/features/_Common/CustomConsole/CustomConsole";
-import { FullViewport, WriteToolboxClasses } from "@/libs/StrongBox/ComponentToolbox";
+import { actions, st } from "@/actions/actions.impl";
+import { CustomConsole } from "@/components/_app/CustomConsole";
 import { RouterRender } from "@/routerInstance.gen";
+import { FullViewport, WriteToolboxClasses } from "@/utils/ComponentToolbox";
 import { createTheme, MantineProvider } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import { useEffect } from "react";

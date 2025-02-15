@@ -1,12 +1,12 @@
-import type { IActions, IColorScheme, IConsole, IData, ILanguage, IViewportSize, IWakeLock } from "@/Actions/actions.interface";
-import { state } from "@/Actions/actions.state";
-import { ColorSchemeImpl } from "@/Actions/impl/ColorSchemeImpl";
-import { ConsoleImpl } from "@/Actions/impl/ConsoleImpl";
-import { DataImpl } from "@/Actions/impl/DataImpl";
-import { LanguageImpl } from "@/Actions/impl/LanguageImpl";
-import { ViewportSizeImpl } from "@/Actions/impl/ViewportSizeImpl";
-import { WakeLockImpl } from "@/Actions/impl/WakeLockImpl";
-import type { RecursiveReadOnlySignal } from "@/libs/StrongBox/signalUtils";
+import type { IActions, IColorScheme, IConsole, IData, ILanguage, IViewportSize, IWakeLock } from "@/actions/actions.interface";
+import { state } from "@/actions/actions.state";
+import { ColorSchemeImpl } from "@/actions/impl/ColorSchemeImpl";
+import { ConsoleImpl } from "@/actions/impl/ConsoleImpl";
+import { DataImpl } from "@/actions/impl/DataImpl";
+import { LanguageImpl } from "@/actions/impl/LanguageImpl";
+import { ViewportSizeImpl } from "@/actions/impl/ViewportSizeImpl";
+import { WakeLockImpl } from "@/actions/impl/WakeLockImpl";
+import type { RecursiveReadOnlySignal } from "@/utils/signalUtils";
 import { computed } from "@preact/signals";
 
 export const st = state as RecursiveReadOnlySignal<typeof state>;

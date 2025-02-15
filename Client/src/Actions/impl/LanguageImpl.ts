@@ -1,5 +1,5 @@
-import type { ILanguage } from "@/Actions/actions.interface";
-import { state } from "@/Actions/actions.state";
+import type { ILanguage } from "@/actions/actions.interface";
+import { state } from "@/actions/actions.state";
 import type { LanguageType } from "@/Shared/SharedModel";
 
 export class LanguageImpl implements ILanguage {

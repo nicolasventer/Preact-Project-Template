@@ -1,4 +1,4 @@
-import { actions } from "@/Actions/actions.impl";
+import { actions } from "@/actions/actions.impl";
 import { FileInput } from "@mantine/core";
 import { FileJson } from "lucide-react";
 

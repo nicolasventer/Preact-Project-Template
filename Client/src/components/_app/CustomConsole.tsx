@@ -1,5 +1,5 @@
-import { actions, st } from "@/Actions/actions.impl";
-import { Horizontal, Vertical } from "@/libs/StrongBox/ComponentToolbox";
+import { actions, st } from "@/actions/actions.impl";
+import { Horizontal, Vertical } from "@/utils/ComponentToolbox";
 import { ActionIcon, Button, Indicator, Paper, Text, ThemeIcon, Tooltip } from "@mantine/core";
 import { signal } from "@preact/signals";
 import { GripHorizontal } from "lucide-react";

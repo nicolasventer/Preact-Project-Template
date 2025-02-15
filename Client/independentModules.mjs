@@ -7,9 +7,16 @@ export const independentModulesConfig = createIndependentModules({
 	modules: [
 		{
 			name: "Root",
-			pattern: ["src/*", "src/api/*", "src/hooks/**", "src/libs/**", "src/tr/*", "*"],
+			pattern: ["src/*", "src/api/*", "src/tr/*", "*"],
 			allowImportsFrom: ["{root}", "src/routes/**", "src/Shared/**", "{misc}", "{externalLibs}"],
 			errorMessage: "🔥 The Root module should access to Root, Routes and Shared modules. 🔥",
+		},
+
+		{
+			name: "Utils",
+			pattern: "src/utils/**",
+			allowImportsFrom: ["src/utils/**", "{externalLibs}"],
+			errorMessage: "🔥 The Utils module should access to Utils modules only. 🔥",
 		},
 
 		{
@@ -22,57 +29,23 @@ export const independentModulesConfig = createIndependentModules({
 		{
 			name: "Routes",
 			pattern: "src/routes/**",
-			allowImportsFrom: ["src/routes/**", "src/features/**", "src/*.gen.ts", "src/clientEnv.ts", "{readOnlyGlobalState}"],
-			errorMessage: "🔥 The Routes module should access to Routes and Features modules and readOnlyGlobalState imports. 🔥",
+			allowImportsFrom: ["src/routes/**", "src/components/**", "src/*.gen.ts", "src/clientEnv.ts", "{readOnlyGlobalState}"],
+			errorMessage: "🔥 The Routes module should access to Routes and Components modules and readOnlyGlobalState imports. 🔥",
 		},
 
 		{
 			name: "Actions",
-			pattern: "src/Actions/**",
-			allowImportsFrom: ["src/Actions/**", "{readWriteGlobalState}"],
+			pattern: "src/actions/**",
+			allowImportsFrom: ["src/actions/**", "{readWriteGlobalState}"],
 			errorMessage: "🔥 The Actions module should access to Actions module and readWriteGlobalState imports. 🔥",
 		},
 
 		{
-			name: "Features Getters",
-			pattern: "src/features/**/*.getters.ts",
-			allowImportsFrom: ["{dirname}/**", "{readOnlyGlobalState}"],
-			errorMessage: "🔥 The Features Getters module should access to Feature folder and readOnlyGlobalState imports. 🔥",
-		},
-
-		{
-			name: "Features API",
-			pattern: "src/features/**/*.api.ts",
-			allowImportsFrom: ["{dirname}/*/**", "{dirname}/*.getters.ts", "src/api/api.ts", "{readOnlyGlobalState}"],
-			errorMessage: "🔥 The Features API module should access to Feature folder, api and readOnlyGlobalState imports. 🔥",
-		},
-
-		{
-			name: "Features Setters",
-			pattern: "src/features/**/*.setters.ts",
-			allowImportsFrom: ["{dirname}/**", "{readWriteGlobalState}"],
-			errorMessage: "🔥 The Features Setters module should access to Feature folder and readWriteGlobalState imports. 🔥",
-		},
-
-		{
-			name: "Features Imports",
-			pattern: "src/features/**/*.imports.ts",
-			allowImportsFrom: ["src/features/**"],
-			errorMessage: "🔥 The Features Imports module should access to all Features. 🔥",
-		},
-
-		{
-			name: "Common Features",
-			pattern: "src/features/_*/**",
-			allowImportsFrom: ["{readOnlyGlobalState}"],
-			errorMessage: "🔥 The Common Features module should access to readOnlyGlobalState imports. 🔥",
-		},
-
-		{
-			name: "Features",
-			pattern: "src/features/*/**",
-			allowImportsFrom: ["{family}/**", "{readOnlyGlobalState}"],
-			errorMessage: "🔥 The Features module should access to its family and readOnlyGlobalState imports. 🔥",
+			name: "Components",
+			pattern: "src/components/**",
+			allowImportsFrom: ["src/components/_*/**", "{dirname}/**", "{readOnlyGlobalState}"],
+			errorMessage:
+				"🔥 The Components module should access to its subfolders, all common components and readOnlyGlobalState imports. 🔥",
 		},
 
 		{
@@ -93,14 +66,12 @@ export const independentModulesConfig = createIndependentModules({
 	],
 	reusableImportPatterns: {
 		misc: ["src/assets/**"],
-		root: ["src/*", "src/api/*", "src/hooks/**", "src/libs/**", "src/tr/*", "*"],
+		root: ["src/*", "src/api/*", "src/utils/**", "src/tr/*", "*"],
 		readOnlyGlobalState: [
 			"src/gs.ts",
-			"src/Actions/actions.impl.ts",
-			"src/Actions/actions.types.ts",
-			"src/features/_*/**",
-			"src/hooks/**",
-			"src/libs/**",
+			"src/actions/actions.impl.ts",
+			"src/actions/actions.types.ts",
+			"src/utils/**",
 			"src/Shared/**",
 			"{misc}",
 			"{externalLibs}",

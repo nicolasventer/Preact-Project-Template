@@ -1,8 +1,8 @@
-import type { IData } from "@/Actions/actions.interface";
+import type { IData } from "@/actions/actions.interface";
 import { globalState } from "@/globalState";
 import { loadGlobalState, LOCAL_STORAGE_KEY } from "@/gs";
-import { saveAs } from "@/libs/StrongBox/clientUtils";
-import { signalToValue } from "@/libs/StrongBox/signalUtils";
+import { saveAs } from "@/utils/clientUtils";
+import { signalToValue } from "@/utils/signalUtils";
 import toast from "react-hot-toast";
 
 export class DataImpl implements IData {

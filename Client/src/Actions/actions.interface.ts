@@ -1,4 +1,4 @@
-import type { ConsoleType, ViewportSize } from "@/Actions/actions.types";
+import type { ConsoleType, ViewportSize } from "@/actions/actions.types";
 import type { ColorSchemeType, LanguageType } from "@/Shared/SharedModel";
 import type { MouseEventHandler, TouchEventHandler } from "react";
 

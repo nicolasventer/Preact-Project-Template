@@ -31,25 +31,23 @@ export const folderStructureConfig = createFolderStructure({
 				{ name: "api", children: [{ name: "api.ts" }, { name: "api.(config|gen|mock).ts" }] },
 				// src/assets/
 				{ ruleId: "assets-folder" },
-				// src/hooks/
-				{ name: "hooks", children: [{ name: "use{PascalCase}.(ts|tsx)" }] },
-				// src/libs/
-				{ name: "libs", children: [] },
+				// src/utils/
+				{ name: "utils", children: [] },
 				// src/routes/
 				{ ruleId: "routes-folder" },
 				// src/tr/
 				{ name: "tr", children: [{ name: "{snake_case}.(ts|js)" }] },
-				// src/Actions/
+				// src/actions/
 				{
-					name: "Actions",
+					name: "actions",
 					children: [
 						{ name: "actions.(impl|interface|state|types|utils).ts" },
 						{ name: "_*.ts" },
 						{ ruleId: "actions-subfolder" },
 					],
 				},
-				// src/features/
-				{ name: "features", children: [{ ruleId: "features-subfolder" }] },
+				// src/components/
+				{ ruleId: "components-folder" },
 				// src/Shared/
 				{ name: "Shared", children: [] },
 			],
@@ -57,19 +55,13 @@ export const folderStructureConfig = createFolderStructure({
 	],
 
 	rules: {
-		"features-subfolder": {
-			// Shared features start with `_`
-			name: "_?{PascalCase}",
+		"components-folder": {
+			name: "components",
 			children: [
-				{ name: "{folderName}.(api|getters|setters|imports).ts" },
-				{
-					name: "{PascalCase}",
-					children: [
-						{ name: "{FolderName}.((lazy.)?tsx|utils.ts)" },
-						{ name: "{FolderName}.module.css" },
-						{ name: "_{PascalCase}.((lazy.)?tsx|utils.ts)" },
-					],
-				},
+				{ name: "_?{camelCase}", ruleId: "components-folder" },
+				{ name: "{PascalCase}(.lazy)?.tsx" },
+				{ name: "{PascalCase}.(utils|props).ts" },
+				{ name: "{PascalCase}.module.css" },
 			],
 		},
 		"routes-folder": {
