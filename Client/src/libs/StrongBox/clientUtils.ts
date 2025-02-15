@@ -18,36 +18,36 @@ export const TodoFn = (description: string) => () => toast(`${description} ${tr.
 export const Magic = <T>(value: T) => value;
 
 /**
- * Calculates the width size object based on the given size.
- * The width size object is a string that represents the minimum value between the given size in viewport width (vw) and the given size multiplied by 10 pixels.
- *
- * @template T - The type of the size parameter.
- * @param {T} size - The size value to calculate the width size object.
- * @param {number} [scale=10] - The scale value to multiply the size value by to get the pixel value.
- * @returns The width size object as a string.
+ * Creates a responsive size value that scales with viewport width, capped at a maximum pixel value.
+ * @example
+ * responsiveSize(5) // "min(5vw, 50px)"
+ * responsiveSize(3, 20) // "min(3vw, 60px)"
+ * @param size The size value (used for both vw units and pixel calculation).
+ * @param scale Multiplier to calculate the maximum pixel value (size * scale).
+ * @returns A CSS min() function string.
  */
-export const widthSizeObj = <T extends number>(size: T, scale = 10) => `min(${size}vw, ${size * scale}px)` as const;
+export const responsiveSize = (size: number, scale = 10) => `min(${size}vw, ${size * scale}px)`;
 
 /**
- * Class that generates unique ids for objects.
+ * Class that generates unique keys for objects.
  * @example
- * const exampleGenerator = new IdGenerator("key");
- * const a = exampleGenerator.withId({ name: "John" }); // { name: "John", key: 0 }
- * const b = exampleGenerator.withId(10); // { key: 1, data: 10 }
- * @template T - The type of the key parameter.
- * @param {T} key - The key to use for the id.
- * @returns The id generator object.
+ * const exampleGenerator = new KeyGenerator("key");
+ * const a = exampleGenerator.withKey({ name: "John" }); // { name: "John", key: 0 }
+ * const b = exampleGenerator.withKey(10); // { key: 1, data: 10 }
+ * @template T The type of the key parameter.
+ * @param key The key to use for the key.
+ * @returns The key generator object.
  */
-export class IdGenerator<T extends string> {
+export class KeyGenerator<T extends string> {
 	constructor(private key: T) {}
 	private id = 0;
 	/**
-	 * Adds an id to the given object.
-	 * @template U - The type of the data.
-	 * @param {U} obj - If the data is an object, it adds the id to the object. Otherwise, it returns an object with the id and the data.
-	 * @returns The object with the id.
+	 * Adds a key to the given object.
+	 * @template U The type of the data.
+	 * @param obj If the data is an object, it adds the key to the object. Otherwise, it returns an object with the key and the data.
+	 * @returns The object with the key.
 	 */
-	withId = <U>(
+	withKey = <U>(
 		obj: U
 	): U extends object
 		? U & { [K in T]: number }

@@ -83,7 +83,7 @@ export const folderStructureConfig = createFolderStructure({
 				{ ruleId: "videos-folder" },
 				{ ruleId: "audios-folder" },
 				{ ruleId: "data-folder" },
-				{ name: "fonts", children: [{ name: "font.css" }], ruleId: "fonts-subfolder" },
+				{ ruleId: "fonts-subfolder", children: [{ name: "font.css" }] },
 				{ name: "*", ruleId: "assets-folder" },
 			],
 		},
@@ -104,6 +104,7 @@ export const folderStructureConfig = createFolderStructure({
 			children: [{ name: "*.json" }, { name: "*", ruleId: "data-folder" }],
 		},
 		"fonts-subfolder": {
+			name: "fonts",
 			children: [{ name: "*.(eot|ttf|woff|woff2)" }, { name: "*", ruleId: "fonts-subfolder" }],
 		},
 		"actions-subfolder": {

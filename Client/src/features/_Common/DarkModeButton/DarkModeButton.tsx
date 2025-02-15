@@ -1,5 +1,5 @@
 import { actions, st } from "@/Actions/actions.impl";
-import { widthSizeObj } from "@/libs/StrongBox/clientUtils";
+import { responsiveSize } from "@/libs/StrongBox/clientUtils";
 import { ActionIcon } from "@mantine/core";
 import { Moon, Sun } from "lucide-react";
 
@@ -7,7 +7,7 @@ export const DarkModeButton = ({ useTransition }: { useTransition: boolean }) =>
 	<ActionIcon loading={st.colorScheme.isLoading.value}>
 		{st.colorScheme.current.value === "dark" && (
 			<Sun
-				width={widthSizeObj(3.5, 6)}
+				width={responsiveSize(3.5, 6)}
 				id={"light-mode-button"}
 				onClick={actions.colorScheme.updateFn("light", useTransition)}
 				style={{ marginBottom: 1 }}
@@ -15,7 +15,7 @@ export const DarkModeButton = ({ useTransition }: { useTransition: boolean }) =>
 		)}
 		{st.colorScheme.current.value === "light" && (
 			<Moon
-				width={widthSizeObj(3.5, 6)}
+				width={responsiveSize(3.5, 6)}
 				id={"dark-mode-button"}
 				onClick={actions.colorScheme.updateFn("dark", useTransition)}
 				style={{ marginBottom: 1 }}

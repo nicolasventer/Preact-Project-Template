@@ -1,5 +1,5 @@
 import { actions, computedSt, st } from "@/Actions/actions.impl";
-import { widthSizeObj } from "@/libs/StrongBox/clientUtils";
+import { responsiveSize } from "@/libs/StrongBox/clientUtils";
 import { ActionIcon } from "@mantine/core";
 import { Lock, LockOpen } from "lucide-react";
 
@@ -8,9 +8,9 @@ export const WakeLockButton = () => (
 		{computedSt.isWakeLockAvailable && (
 			<ActionIcon loading={st.wakeLock.isLoading.value} pb={1}>
 				{st.wakeLock.isEnabled.value ? (
-					<Lock onClick={actions.wakeLock.toggle} width={widthSizeObj(3.5, 6)} />
+					<Lock onClick={actions.wakeLock.toggle} width={responsiveSize(3.5, 6)} />
 				) : (
-					<LockOpen onClick={actions.wakeLock.toggle} width={widthSizeObj(3.5, 6)} />
+					<LockOpen onClick={actions.wakeLock.toggle} width={responsiveSize(3.5, 6)} />
 				)}
 			</ActionIcon>
 		)}
