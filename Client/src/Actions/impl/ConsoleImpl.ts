@@ -102,10 +102,11 @@ export class ConsoleImpl implements IConsole {
 		}) satisfies MouseEventHandler<HTMLElement> & TouchEventHandler<HTMLElement>,
 	};
 	log = {
-		clear: () => (state.console.log.list.value = []),
-		markAsReadFn: (index: number) => () => (state.console.log.toSeeCount.value = state.console.log.list.value.length - index - 1),
+		clear: () => void (state.console.log.list.value = []),
+		markAsReadFn: (index: number) => () =>
+			void (state.console.log.toSeeCount.value = state.console.log.list.value.length - index - 1),
 		wrap: {
-			toggle: () => (state.console.log.isWrapped.value = !state.console.log.isWrapped.value),
+			toggle: () => void (state.console.log.isWrapped.value = !state.console.log.isWrapped.value),
 		},
 	};
 }
