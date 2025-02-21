@@ -2,7 +2,7 @@ import { api } from "@/api/api";
 import type { ColorSchemeType, DynDict, LanguageType, TranslationCategoryType } from "@/Shared/SharedModel";
 import type { Tr } from "@/tr/en";
 import type { RecursiveReadOnlySignal, SignalToValue } from "@/utils/signalUtils";
-import { computed, effect, signal, Signal } from "@preact/signals";
+import { computed, effect, signal, type Signal } from "@preact/signals";
 
 export const LOCAL_STORAGE_KEY = "template_globalState" as const;
 

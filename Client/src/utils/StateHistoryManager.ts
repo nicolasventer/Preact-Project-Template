@@ -12,8 +12,9 @@ export class StateHistoryManager<T> {
 
 	/**
 	 * Create a new instance of the StateHistoryManager.
-	 * @param getState return the current state.
-	 * @param setState update the state.
+	 * @param p the parameters.
+	 * @param p.getState return the current state.
+	 * @param p.setState update the state.
 	 */
 	constructor(private p: { getState: () => T; setState: (state: T) => void }) {}
 

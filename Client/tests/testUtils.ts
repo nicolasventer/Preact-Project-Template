@@ -1,5 +1,6 @@
 export { wait } from "@/Shared/SharedUtils";
-import test, { Page } from "@playwright/test";
+import type test from "@playwright/test";
+import type { Page } from "@playwright/test";
 import MCR from "monocart-coverage-reports";
 import { env } from "process";
 

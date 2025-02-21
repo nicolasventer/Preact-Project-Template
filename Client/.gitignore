@@ -139,6 +139,7 @@ coverage-reports/
 bProd.gen.ts
 !vite-plugin-watch-0.4.0.tgz
 !easy-react-router-1.0.0.tgz
+typedoc_out/
 src/tr/*.js
 projectStructure.cache.json
 bun.lock

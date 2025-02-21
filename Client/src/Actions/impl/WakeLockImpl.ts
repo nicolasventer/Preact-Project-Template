@@ -1,4 +1,4 @@
-import { IWakeLock } from "@/actions/actions.interface";
+import type { IWakeLock } from "@/actions/actions.interface";
 import { state } from "@/actions/actions.state";
 import { effect, signal } from "@preact/signals";
 import toast from "react-hot-toast";

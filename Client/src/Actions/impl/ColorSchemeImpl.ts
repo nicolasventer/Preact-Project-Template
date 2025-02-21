@@ -1,6 +1,6 @@
 import type { IColorScheme } from "@/actions/actions.interface";
 import { state } from "@/actions/actions.state";
-import { ColorSchemeType } from "@/Shared/SharedModel";
+import type { ColorSchemeType } from "@/Shared/SharedModel";
 
 export class ColorSchemeImpl implements IColorScheme {
 	updateFn = (colorScheme: ColorSchemeType, useTransition: boolean) => () => {

@@ -223,7 +223,7 @@ export class SignalControlled<T> {
 
 	/**
 	 * Constructs a controlled signal.
-	 * @param value the initial value
+	 * @param value_ the initial value
 	 */
 	constructor(private value_: T) {}
 

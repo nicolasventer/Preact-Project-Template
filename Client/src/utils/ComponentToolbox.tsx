@@ -6,7 +6,7 @@ import { createElement, forwardRef, useEffect } from "react";
 /**
  * Sets the viewport to be full height and width
  * @param props
- * @param {string} [props.selector="#root"] the selector to set to full viewport
+ * @param {string} [props.selector="#root"] the selector to set to full viewport (default: "#root")
  * @param props.children the children to render
  */
 export const FullViewport = ({ selector = "#root", children }: { selector?: string; children?: ReactNode }) => {
@@ -48,33 +48,28 @@ export const Style = (css: Partial<CSSStyleDeclaration>) => {
  * Writes the selectors to the style element
  * @param styleId the id of the style element
  * @param selectors the selectors to write
- * @param bAppend whether to append to the style element or replace the existing style element
  */
-export const WriteSelectors = (styleId: string, selectors: Record<string, Partial<CSSStyleDeclaration>>, bAppend = true) => {
+export const WriteSelectors = (styleId: string, selectors: Record<string, Partial<CSSStyleDeclaration>>) => {
 	let classStyleEl = document.getElementById(styleId);
 	if (!classStyleEl) {
 		classStyleEl = document.createElement("style");
 		classStyleEl.id = styleId;
 		document.head.appendChild(classStyleEl);
 	}
-	classStyleEl.innerHTML = Object.entries(selectors).reduce(
-		(allStyles, [selector, style]) => {
-			allStyles += `${selector} { ${Style(style)} }\n`;
-			return allStyles;
-		},
-		bAppend ? classStyleEl.innerHTML : ""
-	);
+	classStyleEl.innerHTML = Object.entries(selectors).reduce((allStyles, [selector, style]) => {
+		allStyles += `${selector} { ${Style(style)} }\n`;
+		return allStyles;
+	}, "");
 };
 
 /**
  * Writes the classes to the style element
  * @param styleId the id of the style element
  * @param classes the classes to write
- * @param bAppend whether to append to the style element or replace the existing style element
  */
-export const WriteClasses = (styleId: string, classes: Record<string, Partial<CSSStyleDeclaration>>, bAppend = true) => {
+export const WriteClasses = (styleId: string, classes: Record<string, Partial<CSSStyleDeclaration>>) => {
 	const selectors = Object.fromEntries(Object.entries(classes).map(([className, style]) => [`.${className}`, style]));
-	WriteSelectors(styleId, selectors, bAppend);
+	WriteSelectors(styleId, selectors);
 };
 
 /** Writes the toolbox classes, needs to use the component toolbox */
@@ -147,10 +142,7 @@ const getMargin = ({
 	margin?: CssProperty;
 }) => (margin ? { margin } : { marginTop, marginLeft });
 
-/**
- * @notExported
- * The base properties of the box component
- */
+/** The base properties of the box component */
 type BoxBaseProps = {
 	/** the width of the layout */
 	width?: CssProperty;
@@ -227,10 +219,7 @@ const computeBoxBaseStyle = ({
 	border: borderSolid ? (typeof borderSolid === "string" ? `solid ${borderSolid}` : "solid") : undefined,
 });
 
-/**
- * @notExported
- * The base properties of the layout component
- */
+/** The base properties of the layout component */
 type LayoutBaseProps = {
 	// layout: LayoutType; // for unknown reason, Omit<LayoutProps, "layout"> does not work
 	/** the alignment of the items */
@@ -241,10 +230,7 @@ type LayoutBaseProps = {
 	gap?: CssProperty;
 } & BoxBaseProps;
 
-/**
- * @notExported
- * The properties of the layout component
- */
+/** The properties of the layout component */
 type LayoutProps = LayoutBaseProps & ComponentPropsWithoutRef<"div">;
 
 /**
@@ -335,16 +321,10 @@ export const Vertical = forwardRef(function Vertical(props: LayoutProps, ref: Fo
 	return <Layout ref={ref} {...props} layout="vertical" />;
 });
 
-/**
- * @notExported
- * the type of the parameters of a function
- */
+/** The type of the parameters of a function */
 type Params<T> = T extends (...args: [infer U]) => any ? U : Record<string, never>;
 
-/**
- * @notExported
- * the type of a css property
- */
+/** The type of a css property */
 type CssProperty = number | string | undefined;
 
 /**
@@ -352,7 +332,7 @@ type CssProperty = number | string | undefined;
  * @template T the component type
  * @param props
  * @param props.Comp the component to wrap
- * @param {CssProperty?} [props.flexGrow=1] the flex grow value
+ * @param {CssProperty} [props.flexGrow=1] the flex grow value (default: 1)
  * @returns a component with a flex grow property set
  */
 export const FlexGrow = <T extends (...args: any) => any>({
@@ -373,10 +353,7 @@ export const GetIntrinsicComp = <T extends keyof JSX.IntrinsicElements>(tag: T) 
 		return createElement(tag as any, props);
 	};
 
-/**
- * @notExported
- * The properties of the layout component
- */
+/** The properties of the layout component */
 type BoxProps = LayoutBaseProps & ComponentPropsWithoutRef<"div">;
 
 /**
