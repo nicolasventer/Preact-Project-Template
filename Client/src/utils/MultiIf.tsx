@@ -10,7 +10,7 @@ import { useMemo, type ReactNode } from "react";
  */
 export const If = ({ condition, then, else: else_ }: { condition: boolean; then: () => ReactNode; else?: () => ReactNode }) =>
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	useMemo(() => (condition ? then() : else_?.()), [condition]);
+	useMemo(() => <>{condition ? then() : else_?.()}</>, [condition]);
 
 /**
  * The parameters of the SwitchV function
@@ -63,7 +63,7 @@ export const SwitchVComp = <T, U = T>({ value, transform, cases, defaultCase }: 
 	useMemo(() => {
 		const transformedValue = transform ? transform(value) : (value as unknown as U);
 		const foundCase = cases.find(([u]) => u === transformedValue);
-		return foundCase ? foundCase[1](value, transformedValue) : defaultCase?.(value, transformedValue);
+		return <>{foundCase ? foundCase[1](value, transformedValue) : defaultCase?.(value, transformedValue)}</>;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [value]);
 
@@ -83,6 +83,6 @@ export const MultiIf = ({
 }) =>
 	useMemo(() => {
 		const branch = branches.find((branch) => branch.condition);
-		return branch ? branch.then() : else_?.();
+		return <>{branch ? branch.then() : else_?.()}</>;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [branches]);

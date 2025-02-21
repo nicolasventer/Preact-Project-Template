@@ -1,0 +1,254 @@
+import { WriteSelectors } from "@/utils/ComponentToolbox";
+import { useComputedColorScheme } from "@mantine/core";
+import clsx from "clsx";
+import { type ComponentPropsWithRef, useEffect, useMemo } from "react";
+
+/**
+ * Get the selector for the table
+ * @param cssId the css id used to set the class name of the table
+ * @returns the selector for the table
+ */
+// eslint-disable-next-line react-refresh/only-export-components
+export const getTableSelector = (cssId = "default") => `.table-${cssId}`;
+
+/** The Table component props */
+export type TableProps = {
+	/** Whether to set the table to full width (default: true) */
+	fullWidth?: boolean;
+	/** Whether to set the table to have a border */
+	withTableBorder?: boolean;
+	/** Whether to set the table to have column borders */
+	withColumnBorders?: boolean;
+	/** Whether to set the table to have row borders */
+	withRowBorders?: boolean;
+	/** Whether to set the table to have striped rows */
+	striped?: boolean;
+	/** Whether to set the table to have highlight on hover */
+	highlightOnHover?: boolean;
+	/** Whether to set the table to have sticky header */
+	stickyHeader?: boolean;
+	/** Whether to set the table to have sticky footer */
+	stickyFooter?: boolean;
+	/** Whether to set the table to have resize header first */
+	isResizeHeaderFirst?: boolean;
+	/** The css id used to set the class name of the table (default: "default") */
+	cssId?: string;
+	/** Whether to write the css (default: true) (set to false if you want to overwrite the css for the specified css id) */
+	bWriteCss?: boolean;
+	/** The style options that customize all the table features like striped or highlightOnHover */
+	styleOptions?: {
+		/** The table border css (default: `0.0625rem solid ${theme === "light" ? "#DFE2E6" : "#424242"}`) */
+		tableBorder?: string;
+		/** The column border css (default: `0.0625rem solid ${theme === "light" ? "#DFE2E6" : "#424242"}`) */
+		colBorder?: string;
+		/** The row border css (default: `0.0625rem solid ${theme === "light" ? "#DFE2E6" : "#424242"}`) */
+		rowBorder?: string;
+		/** The striped background color (default: `theme === "light" ? "#F8F9FA" : "#2E2E2E"`) */
+		stripedBackgroundColor?: string;
+		/** The highlight background color (default: `theme === "light" ? "#F1F3F5" : "#3B3B3B"`) */
+		highlightBackgroundColor?: string;
+		/** The sticky header offset (default: `-1`) */
+		stickyHeaderOffset?: number;
+		/** The sticky footer offset (default: `-1`) */
+		stickyFooterOffset?: number;
+		/** The thead background color (default: `theme === "light" ? "#FFFFFF" : "#242424"`) */
+		theadBackgroundColor?: string;
+		/** The tfoot background color (default: `theme === "light" ? "#FFFFFF" : "#242424"`) */
+		tfootBackgroundColor?: string;
+	};
+	/** The styles to apply to table elements (it is using the class name selector defined by the css id) */
+	styles?: {
+		/** The tr styles */
+		tr?: Partial<CSSStyleDeclaration>;
+		/** The th styles */
+		th?: Partial<CSSStyleDeclaration>;
+		/** The td styles */
+		td?: Partial<CSSStyleDeclaration>;
+		/** The table styles */
+		table?: Partial<CSSStyleDeclaration>;
+		/** The thead styles */
+		thead?: Partial<CSSStyleDeclaration>;
+		/** The tbody styles */
+		tbody?: Partial<CSSStyleDeclaration>;
+		/** The tfoot styles */
+		tfoot?: Partial<CSSStyleDeclaration>;
+		/** The other styles */
+		other?: Record<string, Partial<CSSStyleDeclaration>>;
+		/** The thead > tr styles */
+		"thead > tr"?: Partial<CSSStyleDeclaration>;
+		/** The thead > tr > th styles */
+		"thead > tr > th"?: Partial<CSSStyleDeclaration>;
+		/** The thead > tr > td styles */
+		"thead > tr > td"?: Partial<CSSStyleDeclaration>;
+		/** The tbody > tr styles */
+		"tbody > tr"?: Partial<CSSStyleDeclaration>;
+		/** The tbody > tr > th styles */
+		"tbody > tr > th"?: Partial<CSSStyleDeclaration>;
+		/** The tbody > tr > td styles */
+		"tbody > tr > td"?: Partial<CSSStyleDeclaration>;
+		/** The tfoot > tr styles */
+		"tfoot > tr"?: Partial<CSSStyleDeclaration>;
+		/** The tfoot > tr > th styles */
+		"tfoot > tr > th"?: Partial<CSSStyleDeclaration>;
+		/** The tfoot > tr > td styles */
+		"tfoot > tr > td"?: Partial<CSSStyleDeclaration>;
+	};
+	/** The <table> props */
+	tableProps?: Omit<ComponentPropsWithRef<"table">, "children">;
+	/** The <table> children */
+	children?: ComponentPropsWithRef<"table">["children"];
+};
+
+/**
+ * The table component
+ * @param props
+ * @param {boolean} [props.fullWidth=true] whether to set the table to full width (default: true)
+ * @param props.withTableBorder whether to set the table to have a border
+ * @param props.withColumnBorders whether to set the table to have column borders
+ * @param props.withRowBorders whether to set the table to have row borders
+ * @param props.striped whether to set the table to have striped rows
+ * @param props.highlightOnHover whether to set the table to have highlight on hover
+ * @param props.stickyHeader whether to set the table to have sticky header
+ * @param props.stickyFooter whether to set the table to have sticky footer
+ * @param props.isResizeHeaderFirst whether to set the table to have resize header first
+ * @param {string} [props.cssId="default"] the css id used to set the class name of the table (default: "default")
+ * @param {boolean} [props.bWriteCss=true] whether to write the css (default: true) (set to false if you want to overwrite the css for the specified css id)
+ * @param props.styleOptions the style options that customize all the table features like striped or highlightOnHover
+ * @param props.styles the styles to apply to table elements (it is using the class name selector defined by the css id)
+ * @param props.tableProps the <table> props
+ * @param props.children the <table> children
+ */
+export const Table = ({
+	fullWidth = true,
+	withTableBorder,
+	withColumnBorders,
+	withRowBorders,
+	striped,
+	highlightOnHover,
+	stickyHeader,
+	stickyFooter,
+	isResizeHeaderFirst,
+	cssId = "default",
+	bWriteCss = true,
+	styleOptions,
+	styles,
+	tableProps,
+	children,
+}: TableProps) => {
+	const theme = useComputedColorScheme();
+
+	const {
+		tableBorder = `0.0625rem solid ${theme === "light" ? "#DFE2E6" : "#424242"}`,
+		colBorder = `0.0625rem solid ${theme === "light" ? "#DFE2E6" : "#424242"}`,
+		rowBorder = `0.0625rem solid ${theme === "light" ? "#DFE2E6" : "#424242"}`,
+		stripedBackgroundColor = theme === "light" ? "#F8F9FA" : "#2E2E2E",
+		highlightBackgroundColor = theme === "light" ? "#F1F3F5" : "#3B3B3B",
+		stickyHeaderOffset = -1,
+		stickyFooterOffset = -1,
+		theadBackgroundColor = theme === "light" ? "#FFFFFF" : "#242424",
+		tfootBackgroundColor = theme === "light" ? "#FFFFFF" : "#242424",
+	} = styleOptions ?? {};
+
+	const { other, ...mainStyles } = styles ?? {};
+
+	useEffect(() => {
+		if (bWriteCss) {
+			const tableSelector = getTableSelector(cssId);
+			WriteSelectors(`table-${cssId}-css`, {
+				[`${tableSelector}`]: { borderCollapse: "collapse" },
+				[`${tableSelector} th`]: { textAlign: "left" },
+				[`${tableSelector} th *`]: { overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" },
+				[`${tableSelector} th, ${tableSelector} td`]: { padding: "0.4375rem 0.625rem" },
+
+				[`${tableSelector}.table-full-width`]: { minWidth: "100%" },
+				[`${tableSelector}.table-border`]: { border: tableBorder },
+				[`${tableSelector}.table-border, ${tableSelector}.table-border *`]: { boxSizing: "border-box" },
+				[`${tableSelector}.col-border th + th, ${tableSelector}.col-border td + td`]: { borderLeft: colBorder },
+				[`${tableSelector}.row-border tr + tr`]: { borderTop: rowBorder },
+				[`${tableSelector}.row-border thead > tr`]: { borderBottom: rowBorder },
+				[`${tableSelector}.row-striped tbody > tr:nth-of-type(odd)`]: { backgroundColor: stripedBackgroundColor },
+				[`${tableSelector}.row-highlightOnHover tbody > tr:hover`]: { backgroundColor: highlightBackgroundColor },
+				[`${tableSelector}.sticky-header thead`]: {
+					position: "sticky",
+					top: `${stickyHeaderOffset}px`,
+					zIndex: "2",
+					backgroundColor: theadBackgroundColor,
+				},
+				[`${tableSelector}.sticky-header thead > tr`]: { boxShadow: "0px -0.0625rem 0px 0px #424244" },
+				[`${tableSelector}.sticky-header thead th, ${tableSelector}.sticky-header thead td`]: {
+					boxShadow: "inset 0.0625rem 0px 0px 0px #424244", // does not avoid flickering but makes it less visible
+				},
+				[`${tableSelector}.sticky-footer tfoot`]: {
+					position: "sticky",
+					bottom: `${stickyFooterOffset}px`,
+					zIndex: "2",
+					backgroundColor: tfootBackgroundColor,
+				},
+				[`${tableSelector}.sticky-footer tfoot > tr`]: { boxShadow: "0px 0.0625rem 0px 0px #424244" },
+				[`${tableSelector}.sticky-footer tfoot th, ${tableSelector}.sticky-footer tfoot td`]: {
+					boxShadow: "inset 0.0625rem 0px 0px 0px #424244", // does not avoid flickering but makes it less visible
+				},
+			});
+			WriteSelectors(`table-${cssId}-custom-css`, {
+				...Object.fromEntries(
+					Object.entries({ ...mainStyles, ...other }).map(([key, value]) => [
+						`${tableSelector} ${key.replace(/^table/, "")}`,
+						value,
+					])
+				),
+			});
+		}
+	}, [
+		bWriteCss,
+		colBorder,
+		cssId,
+		highlightBackgroundColor,
+		mainStyles,
+		other,
+		rowBorder,
+		stickyFooterOffset,
+		stickyHeaderOffset,
+		stripedBackgroundColor,
+		tableBorder,
+		tfootBackgroundColor,
+		theadBackgroundColor,
+	]);
+
+	const className = useMemo(
+		() =>
+			clsx(
+				`table-${cssId}`,
+				{
+					"table-full-width": fullWidth,
+					"table-border": withTableBorder,
+					"col-border": withColumnBorders,
+					"row-border": withRowBorders,
+					"row-striped": striped,
+					"row-highlightOnHover": highlightOnHover,
+					"resize-header-first": isResizeHeaderFirst,
+					"sticky-header": stickyHeader,
+					"sticky-footer": stickyFooter,
+				},
+				tableProps?.className
+			),
+		[
+			cssId,
+			fullWidth,
+			withTableBorder,
+			withColumnBorders,
+			withRowBorders,
+			striped,
+			highlightOnHover,
+			isResizeHeaderFirst,
+			stickyHeader,
+			stickyFooter,
+			tableProps?.className,
+		]
+	);
+
+	return (
+		<table {...tableProps} className={className}>
+			{children}
+		</table>
+	);
+};
