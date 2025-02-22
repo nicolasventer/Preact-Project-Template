@@ -3,8 +3,6 @@ import { useComputedColorScheme } from "@mantine/core";
 import clsx from "clsx";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-const DOUBLE_CLICK_TIME_THRESHOLD = 300;
-
 type BaseResizeHandleProps = {
 	index: number;
 	width: number;
@@ -27,7 +25,6 @@ const BaseResizeHandle = ({
 }: BaseResizeHandleProps) => {
 	const [isResizing, setIsResizing] = useState(false);
 	const initialClientX = useRef(0);
-	const [lastMouseDownTime, setLastMouseDownTime] = useState(0);
 
 	const theme = useComputedColorScheme();
 
@@ -47,15 +44,9 @@ const BaseResizeHandle = ({
 		ev.preventDefault();
 		initialClientX.current = ev.clientX;
 		setIsResizing(true);
-		if (Date.now() - lastMouseDownTime > DOUBLE_CLICK_TIME_THRESHOLD) {
-			setLastMouseDownTime(Date.now());
-			onStartResize?.();
-			document.addEventListener("mousemove", onMouseMove);
-			document.addEventListener("mouseup", onMouseUp);
-		} else {
-			setIsResizing(false);
-			onDoubleClick?.();
-		}
+		onStartResize?.();
+		document.addEventListener("mousemove", onMouseMove);
+		document.addEventListener("mouseup", onMouseUp);
 	};
 
 	const onTouchMove = (ev: TouchEvent) => {
@@ -71,17 +62,12 @@ const BaseResizeHandle = ({
 	};
 
 	const onTouchStart = (ev: React.TouchEvent<HTMLDivElement>) => {
+		ev.stopPropagation();
 		initialClientX.current = ev.touches[0].clientX;
 		setIsResizing(true);
-		if (Date.now() - lastMouseDownTime > DOUBLE_CLICK_TIME_THRESHOLD) {
-			setLastMouseDownTime(Date.now());
-			onStartResize?.();
-			document.addEventListener("touchmove", onTouchMove);
-			document.addEventListener("touchend", onTouchEnd);
-		} else {
-			setIsResizing(false);
-			onDoubleClick?.();
-		}
+		onStartResize?.();
+		document.addEventListener("touchmove", onTouchMove);
+		document.addEventListener("touchend", onTouchEnd);
 	};
 
 	useEffect(() => {
@@ -145,12 +131,24 @@ export const useColumnWidth = ({
 	isResizeHeaderFirst,
 	tableSelector,
 }: UseColumnWidthProps): UseColumnWidthReturn => {
-	const [headerWidthArray, setHeaderWidthArray] = useState<number[]>(initialWidthArray);
+	const theme = useComputedColorScheme();
+
+	const [headerWidthArray, setHeaderWidthArray_] = useState<number[]>(initialWidthArray);
+	const headerWidthArrayRef = useRef(headerWidthArray);
 	const [widthArray, setWidthArray] = useState<number[]>(initialWidthArray);
 
-	const headerWidthArrayRef = useRef(headerWidthArray);
-	const theme = useComputedColorScheme();
-	useEffect(() => void (headerWidthArrayRef.current = headerWidthArray), [headerWidthArray]);
+	const setHeaderWidthArray: typeof setHeaderWidthArray_ = (widthArray) => {
+		if (typeof widthArray === "function") setWidthArray(widthArray(headerWidthArray));
+		else {
+			setHeaderWidthArray_(widthArray);
+			headerWidthArrayRef.current = widthArray;
+		}
+	};
+
+	const setAllWidthArray: typeof setHeaderWidthArray_ = (widthArray) => {
+		setHeaderWidthArray(widthArray);
+		setWidthArray(widthArray);
+	};
 
 	useEffect(
 		() =>
@@ -197,12 +195,6 @@ export const useColumnWidth = ({
 		[headerWidthArray, tableSelector, theme, widthArray]
 	);
 
-	const setAllWidthArray = (widthArray: number[]) => {
-		setHeaderWidthArray(widthArray);
-		setWidthArray(widthArray);
-		headerWidthArrayRef.current = widthArray;
-	};
-
 	// TODO: implement double click behavior
 	const onDoubleClick = () => {
 		console.log("double click (not yet implemented)");
@@ -238,6 +230,7 @@ export const useColumnWidth = ({
 							tableSelector={tableSelector}
 						/>
 				  ),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[isResizeHeaderFirst, tableSelector]
 	);
 
