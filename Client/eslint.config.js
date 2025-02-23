@@ -4,7 +4,6 @@ import js from "@eslint/js";
 import noRelativeImportPlugin from "eslint-plugin-no-relative-import-paths";
 import { projectStructureParser, projectStructurePlugin } from "eslint-plugin-project-structure";
 import react from "eslint-plugin-react";
-import reactCompiler from "eslint-plugin-react-compiler";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";
@@ -43,7 +42,6 @@ export default tseslint.config(
 			"react-refresh": reactRefresh,
 			"no-relative-import-paths": noRelativeImportPlugin,
 			react,
-			"react-compiler": reactCompiler,
 		},
 		rules: {
 			"react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
@@ -68,7 +66,6 @@ export default tseslint.config(
 			"react-hooks/exhaustive-deps": "warn",
 			"@typescript-eslint/no-namespace": "off",
 			"@typescript-eslint/consistent-type-imports": "warn",
-			"react-compiler/react-compiler": "error",
 		},
 	}
 );
