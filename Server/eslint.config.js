@@ -42,6 +42,7 @@ export default tseslint.config(
 			"no-useless-constructor": "off",
 			"@typescript-eslint/no-useless-constructor": "error",
 			"@typescript-eslint/no-namespace": "off",
+			"@typescript-eslint/consistent-type-imports": "warn",
 		},
 	}
 );
