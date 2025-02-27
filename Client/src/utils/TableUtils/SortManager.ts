@@ -78,13 +78,4 @@ export class SortManager<T extends string, U> {
 		else if (sortState[index].asc) return sortState.with(index, { key, asc: false });
 		else return sortState.filter(({ key: k }) => k !== key);
 	};
-
-	/**
-	 * Get the sort asc value
-	 * @param sortState the sort state
-	 * @param key the key of the sort to get the asc value
-	 * @returns true if the sort is ascending, false if it is descending, and undefined if the sort is not active
-	 */
-	getSortAscValue = (sortState: SortManager<T, U>["types"]["sortState"], key: T) =>
-		sortState.find(({ key: k }) => k === key)?.asc;
 }

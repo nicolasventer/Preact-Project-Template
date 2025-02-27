@@ -45,6 +45,14 @@ export class ColumnManager<T extends string, U> {
 		this.getAllKeys().map((key) => ({ key, isVisible: visibleColumns.includes(key) }));
 
 	/**
+	 * Get the visible column values
+	 * @param columnState the column state
+	 * @returns the visible column values
+	 */
+	getVisibleColumnValues = (columnState: ColumnManager<T, U>["types"]["columnState"]) =>
+		columnState.filter((column) => column.isVisible).map((column) => this.columns[column.key]);
+
+	/**
 	 * Get all the keys of the columns
 	 * @returns the keys of the columns
 	 */
@@ -56,7 +64,7 @@ export class ColumnManager<T extends string, U> {
 	 * @param key the key of the column to toggle
 	 * @returns the updated column state
 	 */
-	toggleColumnState = (
+	toggleColumnVisibility = (
 		columnState: ColumnManager<T, U>["types"]["columnState"],
 		key: T
 	): ColumnManager<T, U>["types"]["columnState"] =>

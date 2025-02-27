@@ -47,10 +47,6 @@ export type TableProps = {
 		stripedBackgroundColor?: string;
 		/** The highlight background color (default: `theme === "light" ? "#F1F3F5" : "#3B3B3B"`) */
 		highlightBackgroundColor?: string;
-		/** The sticky header offset (default: `-1`) */
-		stickyHeaderOffset?: number;
-		/** The sticky footer offset (default: `-1`) */
-		stickyFooterOffset?: number;
 		/** The thead background color (default: `theme === "light" ? "#FFFFFF" : "#242424"`) */
 		theadBackgroundColor?: string;
 		/** The tfoot background color (default: `theme === "light" ? "#FFFFFF" : "#242424"`) */
@@ -143,8 +139,6 @@ export const Table = ({
 		rowBorder = `0.0625rem solid ${theme === "light" ? "#DFE2E6" : "#424242"}`,
 		stripedBackgroundColor = theme === "light" ? "#F8F9FA" : "#2E2E2E",
 		highlightBackgroundColor = theme === "light" ? "#F1F3F5" : "#3B3B3B",
-		stickyHeaderOffset = -1,
-		stickyFooterOffset = -1,
 		theadBackgroundColor = theme === "light" ? "#FFFFFF" : "#242424",
 		tfootBackgroundColor = theme === "light" ? "#FFFFFF" : "#242424",
 	} = styleOptions ?? {};
@@ -153,41 +147,50 @@ export const Table = ({
 
 	useEffect(() => {
 		if (bWriteCss) {
+			const tableBackgroundColor = theme === "light" ? "#FFFFFF" : "#242424";
+			const rowBorderColor = "#424242";
+			const colBorderColor = "#424242";
 			const tableSelector = getTableSelector(cssId);
 			WriteSelectors(`table-${cssId}-css`, {
-				[`${tableSelector}`]: { borderCollapse: "collapse" },
+				[`${tableSelector}`]: { borderCollapse: "collapse", fontSize: "0.875rem" },
+				[`${tableSelector}, ${tableSelector} *`]: { boxSizing: "border-box" },
 				[`${tableSelector} th`]: { textAlign: "left" },
 				[`${tableSelector} th *`]: { overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" },
-				[`${tableSelector} th, ${tableSelector} td`]: { padding: "0.4375rem 0.625rem" },
+				[`${tableSelector} th, ${tableSelector} td`]: { padding: "0.4375rem 0.625rem", backgroundColor: tableBackgroundColor },
 
 				[`${tableSelector}.table-full-width`]: { minWidth: "100%" },
 				[`${tableSelector}.table-border`]: { border: tableBorder },
-				[`${tableSelector}.table-border, ${tableSelector}.table-border *`]: { boxSizing: "border-box" },
-				[`${tableSelector}.col-border th + th, ${tableSelector}.col-border td + td`]: { borderLeft: colBorder },
-				[`${tableSelector}.row-border tr + tr`]: { borderTop: rowBorder },
-				[`${tableSelector}.row-border thead > tr`]: { borderBottom: rowBorder },
-				[`${tableSelector}.row-striped tbody > tr:nth-of-type(odd)`]: { backgroundColor: stripedBackgroundColor },
-				[`${tableSelector}.row-highlightOnHover tbody > tr:hover`]: { backgroundColor: highlightBackgroundColor },
-				[`${tableSelector}.sticky-header thead`]: {
-					position: "sticky",
-					top: `${stickyHeaderOffset}px`,
-					zIndex: "2",
-					backgroundColor: theadBackgroundColor,
+				[`${tableSelector}.table-border > :first-child > tr:first-child,
+					${tableSelector}.table-border > :last-child > tr:last-child`]: {
+					// visible when table-border is set and not row-border
+					boxShadow: `inset 0px 0px 0px 0.0625rem ${rowBorderColor}`,
 				},
-				[`${tableSelector}.sticky-header thead > tr`]: { boxShadow: "0px -0.0625rem 0px 0px #424244" },
-				[`${tableSelector}.sticky-header thead th, ${tableSelector}.sticky-header thead td`]: {
-					boxShadow: "inset 0.0625rem 0px 0px 0px #424244", // does not avoid flickering but makes it less visible
+				[`${tableSelector}.col-border th, ${tableSelector}.col-border td`]: {
+					borderLeft: colBorder,
+					borderRight: colBorder,
+					// visible when col-border is set and some columns are pinned
+					boxShadow: `inset 0.0625rem 0px 0px 0px ${colBorderColor}`,
 				},
-				[`${tableSelector}.sticky-footer tfoot`]: {
-					position: "sticky",
-					bottom: `${stickyFooterOffset}px`,
-					zIndex: "2",
-					backgroundColor: tfootBackgroundColor,
+				[`${tableSelector}.row-border tr`]: {
+					borderTop: rowBorder,
+					borderBottom: rowBorder,
+					// visible when row-border is set and header or footer is sticky
+					boxShadow: `inset 0px 0px 0px 0.0625rem ${rowBorderColor}`,
 				},
-				[`${tableSelector}.sticky-footer tfoot > tr`]: { boxShadow: "0px 0.0625rem 0px 0px #424244" },
-				[`${tableSelector}.sticky-footer tfoot th, ${tableSelector}.sticky-footer tfoot td`]: {
-					boxShadow: "inset 0.0625rem 0px 0px 0px #424244", // does not avoid flickering but makes it less visible
-				},
+				// visible when row-border is set and not table-border
+				[`${tableSelector}.row-border > :first-child > tr:first-child`]: { borderTop: "none" },
+				[`${tableSelector}.row-border > :last-child > tr:last-child`]: { borderBottom: "none" },
+				// visible when col-border is set and not table-border
+				[`${tableSelector}.col-border th:first-child,
+					${tableSelector}.col-border td:first-child`]: { borderLeft: "none", boxShadow: "none" },
+				[`${tableSelector}.col-border th:last-child, ${tableSelector}.col-border td:last-child`]: { borderRight: "none" },
+
+				[`${tableSelector}.row-striped tbody > tr:nth-of-type(odd) > th,
+					${tableSelector}.row-striped tbody > tr:nth-of-type(odd) > td`]: { backgroundColor: stripedBackgroundColor },
+				[`${tableSelector}.row-highlightOnHover tbody > tr:hover > th,
+					${tableSelector}.row-highlightOnHover tbody > tr:hover > td`]: { backgroundColor: highlightBackgroundColor },
+				[`${tableSelector}.sticky-header thead`]: { position: "sticky", top: "0", zIndex: "3" },
+				[`${tableSelector}.sticky-footer tfoot`]: { position: "sticky", bottom: "0", zIndex: "3" },
 			});
 			WriteSelectors(`table-${cssId}-custom-css`, {
 				...Object.fromEntries(
@@ -206,12 +209,11 @@ export const Table = ({
 		mainStyles,
 		other,
 		rowBorder,
-		stickyFooterOffset,
-		stickyHeaderOffset,
 		stripedBackgroundColor,
 		tableBorder,
 		tfootBackgroundColor,
 		theadBackgroundColor,
+		theme,
 	]);
 
 	const className = useMemo(
