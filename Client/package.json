@@ -35,14 +35,12 @@
 		"@eslint/js": "9.19.0",
 		"@playwright/test": "1.50.1",
 		"@preact/preset-vite": "2.10.1",
-		"@preact/signals-react-transform": "0.5.1",
 		"@types/bun": "1.2.2",
 		"@types/dom-view-transitions": "1.0.5",
 		"@types/node": "22.13.1",
 		"@types/react": "19.0.8",
 		"@types/react-dom": "19.0.3",
 		"@typescript-eslint/eslint-plugin": "8.23.0",
-		"@vitejs/plugin-react": "4.3.4",
 		"cross-env": "7.0.3",
 		"dependency-cruiser": "16.9.0",
 		"eslint": "9.19.0",
@@ -63,12 +61,12 @@
 	},
 	"dependencies": {
 		"@elysiajs/eden": "1.2.0",
-		"@preact/signals": "npm:@preact/signals-react",
-		"@preact/signals-react": "3.0.1",
+		"@preact/signals": "2.0.0",
 		"clsx": "2.1.1",
 		"easy-react-router": "easy-react-router-1.0.0.tgz",
 		"elysia": "1.2.12",
-		"react": "19.0.0",
-		"react-dom": "19.0.0"
+		"preact": "10.24.3",
+		"react": "npm:@preact/compat",
+		"react-dom": "npm:@preact/compat"
 	}
 }
