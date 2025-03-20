@@ -7,7 +7,10 @@
 		"skipLibCheck": true,
 		"paths": {
 			"@/*": ["./src/*"],
-			"@preact/signals": ["./node_modules/@preact/signals-react/"]
+			"react": ["./node_modules/preact/compat/"],
+			"react/jsx-runtime": ["./node_modules/preact/jsx-runtime"],
+			"react-dom": ["./node_modules/preact/compat/"],
+			"react-dom/*": ["./node_modules/preact/compat/*"]
 		},
 
 		/* Bundler mode */
