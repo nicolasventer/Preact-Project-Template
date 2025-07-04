@@ -33,7 +33,7 @@ export const independentModulesConfig = createIndependentModules({
 		{
 			name: "Routes",
 			pattern: "src/routes/**",
-			allowImportsFrom: ["src/Shared/**", "src/utils/**", "{misc}", "{dirname}/**"],
+			allowImportsFrom: ["src/Shared/**", "src/utils/**", "src/impl.ts", "{misc}", "{dirname}/**"],
 			errorMessage: "🔥 The Routes module should only access Shared modules, Utils and Route folder and subfolders. 🔥",
 		},
 

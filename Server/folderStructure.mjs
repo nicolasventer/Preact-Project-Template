@@ -15,6 +15,8 @@ export const folderStructureConfig = createFolderStructure({
 			children: [
 				// src/index.ts
 				{ name: "index.ts" },
+				// src/impl.ts
+				{ name: "impl.ts" },
 				// src/testIndex.ts
 				{ name: "testIndex.ts" },
 				// src/testConfig.ts

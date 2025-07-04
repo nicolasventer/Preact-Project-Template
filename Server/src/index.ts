@@ -10,7 +10,8 @@ export const app = new Elysia()
 	.use(cors())
 	.use(swagger())
 	.on("request", ((ctx: { request: BunRequest }) => console.log(`${ctx.request.method} ${ctx.request.url}`)) as any)
-	.on("error", console.error)
+	.on("error", ((ctx: { request: BunRequest; error: Error }) =>
+		console.error(`${ctx.request.method} ${ctx.request.url} ${ctx.error}\n${ctx.error.stack}`)) as any)
 	.get("/", () => "Server is running")
 	// use apiApp
 	.use(apiApp)

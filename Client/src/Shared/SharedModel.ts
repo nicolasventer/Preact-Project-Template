@@ -47,3 +47,10 @@ export const FindUserSchema = t.Optional(
 );
 
 export type FindUser = typeof FindUserSchema.static;
+
+export const ExecuteSchema = t.Object({
+	url: t.String({ description: "The URL to execute, should start with /", examples: ["/hello", "/user/123"] }),
+	body: t.Any({ description: "The body to send to the URL" }),
+});
+
+export type Execute = typeof ExecuteSchema.static;
